@@ -3,21 +3,21 @@
                                 GAL22V10
 
                           -------\___/-------
-                      CLK |  1           24 | VCC
+                    /IORQ |  1           24 | VCC
                           |                 |
-                       M1 |  2           23 | /CRSEL
+                      /WR |  2           23 | /CRSEL
                           |                 |
-                    /IORQ |  3           22 | /SNWSEL
+                       A5 |  3           22 | /SNWSEL
                           |                 |
-                      /WR |  4           21 | /VDPRSEL
+                       A6 |  4           21 | /VDPRSEL
                           |                 |
-                       A5 |  5           20 | /VDPWSEL
+                       A7 |  5           20 | /VDPWSEL
                           |                 |
-                       A6 |  6           19 | /C2WSEL
+                       NC |  6           19 | /C2WSEL
                           |                 |
-                       A7 |  7           18 | /C1WSEL
+                       NC |  7           18 | /C1WSEL
                           |                 |
-                       NC |  8           17 | M1WAIT
+                       NC |  8           17 | NC
                           |                 |
                        NC |  9           16 | NC
                           |                 |

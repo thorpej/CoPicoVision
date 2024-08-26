@@ -1,8 +1,8 @@
 GAL22V10
 IODEC
 
-CLK M1 /IORQ /WR    A5      A6      A7      NC       NC       NC      NC    GND
-NC  NC  NC    NC    M1WAIT /C1WSEL /C2WSEL /VDPWSEL /VDPRSEL /SNWSEL /CRSEL VCC
+/IORQ /WR A5 A6 A7  NC      NC      NC       NC       NC      NC    GND
+ NC    NC NC NC NC /C1WSEL /C2WSEL /VDPWSEL /VDPRSEL /SNWSEL /CRSEL VCC
 
 ;
 ; This implements two functions for the CoPicoVision:
@@ -28,24 +28,6 @@ VDPWSEL = A7 * /A6 *  A5 * IORQ *  WR		; $A0 writes
 C1WSEL  = A7 *  A6 * /A5 * IORQ *  WR		; $C0 writes
 CRSEL   = A7 *  A6 *  A5 * IORQ * /WR		; $E0 reads
 SNWSEL  = A7 *  A6 *  A5 * IORQ *  WR		; $E0 writes
-
-;
-; M1 wait-state generation.
-;
-; When M1 goes low, that indicates the the start of the M1 cycle.  When
-; this happens, we need to insert a wait-state for one clock cycle.  This
-; is done by holding the M1WAIT flip-flop in reset while M1 is high (using
-; the M1 input as the async-reset for the OLMC flip-flops).  When M1 goes
-; low, then next cycle feeds back and latches the inverse if M1WAIT into
-; M1WAIT, causing it to go high.  M1WAIT continues to toggle every clock
-; cycle until M1 is over, at which point the M1 input goes high again and
-; the flip-flop is held in reset until the next M1 cycle.
-;
-; The M1WAIT output pin is connected to an open-drain inverter, because the
-; /WAIT input to the Z80 is wired-OR.
-;
-AR = M1
-M1WAIT.R = /M1WAIT
 
 DESCRIPTION
 

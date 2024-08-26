@@ -1,11 +1,14 @@
 GAL22V10
 MEMDEC
 
-/MREQ /RFSH A13  A14       A15       NC      NC        NC     NC NC  NC     GND
- NC    NC   NC  /CRTESEL  /CRTCSEL  /CRTASEL /CRT8SEL /RAMSEL NC NC /ROMSEL VCC
+CLK M1 /MREQ   /RFSH      A13       A14      A15      NC     NC NC  NC     GND
+NC  NC  M1WAIT /CRTESEL  /CRTCSEL  /CRTASEL /CRT8SEL /RAMSEL NC NC /ROMSEL VCC
 
 ;
-; This implements memory space decoding for the CoPicoVision:
+; This implements memory space decoding and M1 wait-state generation for
+; the CoPicoVision.
+;
+
 ;
 ; The ColecoVision has the following memory space address map:
 ;
@@ -29,6 +32,41 @@ CRTASEL  =  A15 * /A14 *  A13 * MREQ * /RFSH
 CRTCSEL  =  A15 *  A14 * /A13 * MREQ * /RFSH
 CRTESEL  =  A15 *  A14 *  A13 * MREQ * /RFSH
 
+;
+; M1 wait-state generation.
+;
+; According to the Z80 manual, M1 starts nominally high, which asserts
+; the async-reset on the OLMC flip-flops, thus driving our M1WAIT output
+; low.
+;
+; When the M1 machine cycle starts, our M1 input goes low, thus de-asserting
+; our async-reset.  Then, when CLK goes high at the start of M1T2, we latch
+; the inverse of our M1WAIT output into the M1WAIT flip-flop, thus driving
+; our M1WAIT output high.  M1WAIT is externally connected to an open-drain
+; inverter to assert the wired-OR /WAIT input on the Z80.  When the Z80
+; samples /WAIT at the falling edge of CLK in the middle of M1T2, the Z80
+; will enter wait-state.
+;
+; On the next rising edge of CLK in our elgongated M1T2, the inverse of the
+; M1WAIT output will again be latched into the M1WAIT flip-flop, thus driving
+; our M1WAIT output low, which in turn will de-assert /WAIT on the Z80.  At
+; the next falling edge of CLK, the Z80 will again sample /WAIT and find it
+; de-asserted and continue on with M1T2.
+;
+; The M1 input will continue to be low until just after the rising edge of
+; CLK that marks the beginning of M1T3.  However, M1 will go high, and thus
+; assert the async-reset of the M1WAIT flip-flop, thus ensuring that we will
+; not re-assert /WAIT, before the next falling edge of CLK.
+;
+; The net effect is that M1T2 is extended for one clock cycle in order to
+; meet the requirements of any slow memory that might participate in opcode
+; fetch.  This is not needed for other memory read or write cycles because
+; the access times are a fair bit longer in those scenarios.
+;
+AR = M1
+M1WAIT.R = /M1WAIT
+
 DESCRIPTION
 
-This is the memory address decoder for the CoPicoVision.
+This is the memory address decoder and M1 wait-state generator for the
+CoPicoVision.
