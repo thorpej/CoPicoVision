@@ -1,0 +1,29 @@
+
+
+                                GAL22V10
+
+                          -------\___/-------
+                    /MREQ |  1           24 | VCC
+                          |                 |
+                    /RFSH |  2           23 | /ROMSEL
+                          |                 |
+                      A13 |  3           22 | NC
+                          |                 |
+                      A14 |  4           21 | NC
+                          |                 |
+                      A15 |  5           20 | /RAMSEL
+                          |                 |
+                       NC |  6           19 | /CRT8SEL
+                          |                 |
+                       NC |  7           18 | /CRTASEL
+                          |                 |
+                       NC |  8           17 | /CRTCSEL
+                          |                 |
+                       NC |  9           16 | /CRTESEL
+                          |                 |
+                       NC | 10           15 | NC
+                          |                 |
+                       NC | 11           14 | NC
+                          |                 |
+                      GND | 12           13 | NC
+                          -------------------
