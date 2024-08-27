@@ -42,6 +42,39 @@ fine.  Maybe one day I'll evaluate one of the FPGA Z80 cores floating around
 to see if it's feasible to use one of those with an iCE40 FPGA in an updated
 version of the CoPicoVision.  But for now, a genuine Z80 must be used.
 
+## Design details
+
+### Power supply
+
+### Clock and reset generation
+
+### Address decoding and memory
+Address decoding is performed using 2 GAL22V10 programmable logic devices.
+The ColecoVision uses 2 74LS138s for address decoding, but also requires
+some extra logic to invert some of the signals used by the decoders.  By
+using GALs for this purpose, I save the extra logic chips.
+
+The ColecoVision also uses a 74LS74 along with some additional logic gates
+to implement a wait-state generator when the Z80 performs an opcode fetch.
+It does this presumably to give some extra breathing room to slow ROMs (of
+the Z80 machine cycles, M1 has the tightest timing).  There is plenty of
+left-over space in the decoder GALs, so I put it in the MEMDEC GAL (since
+it's about the opcode fetch from memory).
+
+The BIOS ROM for the CoPicoVision is contained in a 150ns 28C64 EEPROM.
+I chose this part because:
+* I have a bunch of them on-hand.
+* They're totally fast enough.
+* They're still being made and you can buy them new from Mouser and DigiKey.
+* They're easy to program with Arduino-based home-brew EEPROM programmers.
+
+The CoPicoVision's RAM is an AS6C6264-55PCN, which is an 8KB 55ns SRAM
+chip, only 1KB of which is used.
+
+### Audio / video
+
+### Controller interface
+
 ## Acknowledgements
 First of all, I want to say that I was inspired to take a crack at this by the
 Leako project, which you can read about [here](https://www.leadedsolder.com/tag/leako).
