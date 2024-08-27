@@ -1,0 +1,31 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4)
+
+  (paper "A4")
+
+  (lib_symbols
+  )
+
+
+  (sheet (at 17.653 16.891) (size 32.893 16.002) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 8615a0a6-afcd-4b64-9658-932273f7553c)
+    (property "Sheetname" "Memory and Address Decoding" (at 17.653 16.1794 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "CoPicoVision_memory.kicad_sch" (at 17.653 33.4776 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CoPicoVision"
+        (path "/d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4" (page "2"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)
