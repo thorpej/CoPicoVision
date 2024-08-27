@@ -29,7 +29,7 @@ a compatible part, and there are open source tools for programming them, so the
 design is still very accessible.
 
 There are two "vintage" parts that are required for the CoPicoVision:
-* A Z80 CPU in a DIP40 package.
+* A Z80 CPU in a DIP-40 package.
 * A TI SN76489AN sound chip.
 
 Eventually, I'd like to replace the SN76489AN with an emulated part, (almost
@@ -47,6 +47,16 @@ version of the CoPicoVision.  But for now, a genuine Z80 must be used.
 ### Power supply
 
 ### Clock and reset generation
+The clock circuit on the CoPicoVision is as simple as it gets: it's simply
+a 3.579545 MHz DIP-8 oscillator can that drives the whole thing.  The only
+devices that need the CPUCLK signal are the Z80, the M1 wait-state generator,
+and the SN76489AN sound chip, and those are all directly driven from the
+oscillator.  The Pi Pico that generates the video has its own clock, so none
+of the complicated clock circuitry from the original ColecoVision is necessary.
+
+The reset circuit is also very simple.  It's based on the DS1813 reset
+generator IC, which also de-bounces the reset button.  There is a small RC
+network that makes the power-on-reset slightly longer than a manual reset.
 
 ### Address decoding and memory
 Address decoding is performed using 2 GAL22V10 programmable logic devices.
