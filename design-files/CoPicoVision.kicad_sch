@@ -1128,7 +1128,7 @@
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
-  (global_label "~{CPUCLK}" (shape input) (at 29.845 88.392 180) (fields_autoplaced)
+  (global_label "CPUCLK" (shape input) (at 29.845 88.392 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 7a4ee30b-7778-4e51-8012-7e62bde6f918)
     (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 19.5006 88.392 0)
