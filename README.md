@@ -81,7 +81,28 @@ I chose this part because:
 The CoPicoVision's RAM is an AS6C6264-55PCN, which is an 8KB 55ns SRAM
 chip, only 1KB of which is used.
 
-### Audio / video
+### Audio
+
+### Video
+Of course, the video circuit is built using a Raspberry Pi Pico running a
+modified version of the pico9918 firmware.  The following changes from
+the base pico9918 have been made:
+* I don't need the CPUCLK and GROMCLK outputs, so these have been omitted.
+This saves 2 pins and means I can use a regular Raspberry Pi Pico.
+* I have inverted the interrupt output so that I can use it to drive a
+TTL-level open-drain inverter to pull down the Z80's /NMI signal.
+
+The bus interface to the Pico is a little simpler than that used on the
+pico9918.  Two 74LVC245 bus transceivers are used to perform the 3V3 <--> 5V
+level shift.  This works perfectly fine since I've arranged for everything
+on the 5V side to use TTL logic levels.  One transceiver is hard-wired for
+the B->A direction and level-shifts the A0, /VDPWSEL, /VDPRSEL, and /RESET
+input signals.  The other transceiver level-shifts the data bus and takes
+care of swizzing the bit order between the VDP and the Z80.  The IODEC GAL
+generates an extra signal that's used to enable the output of the data bus
+transceiver, and the direction of the transceiver is controlled by /VDPWSEL.
+
+The VGA resistor DAC is identical to the pico9918's.
 
 ### Controller interface
 

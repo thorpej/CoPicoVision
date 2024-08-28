@@ -332,6 +332,10 @@
     [
       "8615a0a6-afcd-4b64-9658-932273f7553c",
       "Memory and Address Decoding"
+    ],
+    [
+      "cddb2abf-ae9c-4f12-8059-bd0591c2bb33",
+      "Video"
     ]
   ],
   "text_variables": {}

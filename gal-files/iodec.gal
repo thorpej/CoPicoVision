@@ -1,8 +1,8 @@
 GAL22V10
 IODEC
 
-/IORQ /WR A5 A6 A7  NC      NC      NC       NC       NC      NC    GND
- NC    NC NC NC NC /C1WSEL /C2WSEL /VDPWSEL /VDPRSEL /SNWSEL /CRSEL VCC
+/IORQ /WR A5 A6  A7      NC      NC     NC       NC       NC      NC    GND
+ NC    NC NC NC /C1WSEL /C2WSEL /VDPEN /VDPWSEL /VDPRSEL /SNWSEL /CRSEL VCC
 
 ;
 ; This implements two functions for the CoPicoVision:
@@ -25,6 +25,7 @@ IODEC
 C2WSEL  = A7 * /A6 * /A5 * IORQ *  WR		; $80 writes
 VDPRSEL = A7 * /A6 *  A5 * IORQ * /WR		; $A0 reads
 VDPWSEL = A7 * /A6 *  A5 * IORQ *  WR		; $A0 writes
+VDPEN   = A7 * /A6 *  A5 * IORQ			; enable VDP transceiver
 C1WSEL  = A7 *  A6 * /A5 * IORQ *  WR		; $C0 writes
 CRSEL   = A7 *  A6 *  A5 * IORQ * /WR		; $E0 reads
 SNWSEL  = A7 *  A6 *  A5 * IORQ *  WR		; $E0 writes

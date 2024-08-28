@@ -13,11 +13,11 @@
                           |                 |
                        A7 |  5           20 | /VDPWSEL
                           |                 |
-                       NC |  6           19 | /C2WSEL
+                       NC |  6           19 | /VDPEN
                           |                 |
-                       NC |  7           18 | /C1WSEL
+                       NC |  7           18 | /C2WSEL
                           |                 |
-                       NC |  8           17 | NC
+                       NC |  8           17 | /C1WSEL
                           |                 |
                        NC |  9           16 | NC
                           |                 |
