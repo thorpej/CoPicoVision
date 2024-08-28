@@ -481,6 +481,10 @@
     [
       "cddb2abf-ae9c-4f12-8059-bd0591c2bb33",
       "Video"
+    ],
+    [
+      "e0ac0253-c368-4a00-80da-4eff7e9af602",
+      "Controller Interface"
     ]
   ],
   "text_variables": {}

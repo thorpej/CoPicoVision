@@ -2364,6 +2364,23 @@
     )
   )
 
+  (sheet (at 93.218 17.018) (size 26.543 16.383) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid e0ac0253-c368-4a00-80da-4eff7e9af602)
+    (property "Sheetname" "Controller Interface" (at 93.218 16.3064 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "CoPicoVision_controllers.kicad_sch" (at 93.218 33.9856 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CoPicoVision"
+        (path "/d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4" (page "4"))
+      )
+    )
+  )
+
   (sheet_instances
     (path "/" (page "1"))
   )
