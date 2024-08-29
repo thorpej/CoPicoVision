@@ -1551,6 +1551,9 @@
   (junction (at 89.408 138.303) (diameter 0) (color 0 0 0 0)
     (uuid 34e1ac6d-d2a7-48fa-8d54-f20ec59b4353)
   )
+  (junction (at 90.551 180.975) (diameter 0) (color 0 0 0 0)
+    (uuid 456686b9-e01f-4b34-8dc9-500d08258a94)
+  )
   (junction (at 31.369 188.468) (diameter 0) (color 0 0 0 0)
     (uuid 54e3668a-a8ef-42b9-a7bf-3f6120c86917)
   )
@@ -2593,6 +2596,31 @@
       (project "CoPicoVision"
         (path "/d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4"
           (reference "H102") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:GND") (at 90.551 180.975 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 57c25e71-24cf-4966-bddd-d69db1f7ad09)
+    (property "Reference" "#PWR0119" (at 90.551 187.325 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 90.551 185.42 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 90.551 180.975 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 90.551 180.975 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid baecf4f8-9b85-45eb-9b71-792d24a12c95))
+    (instances
+      (project "CoPicoVision"
+        (path "/d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4"
+          (reference "#PWR0119") (unit 1)
         )
       )
     )

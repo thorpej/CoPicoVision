@@ -2487,6 +2487,31 @@
     )
   )
 
+  (symbol (lib_id "power:GND") (at 73.406 84.455 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid cd8c65fc-e5d8-40c5-94da-1dc4f67a8e58)
+    (property "Reference" "#PWR0310" (at 73.406 90.805 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 73.406 88.9 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 73.406 84.455 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 73.406 84.455 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid c78fb655-a227-4cd7-ac28-4a11189c85bc))
+    (instances
+      (project "CoPicoVision"
+        (path "/d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4/cddb2abf-ae9c-4f12-8059-bd0591c2bb33"
+          (reference "#PWR0310") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "Device:R_Pack04_SIP") (at 79.248 153.416 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid cf03d7e4-03d0-46a4-9f9e-ddca070706e4)
