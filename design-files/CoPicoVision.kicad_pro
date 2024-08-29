@@ -420,7 +420,8 @@
     },
     "net_colors": null,
     "netclass_assignments": {
-      "Net-(D101-A)": "Power"
+      "Net-(D101-A)": "Power",
+      "Net-(Q101-S)": "Power"
     },
     "netclass_patterns": []
   },
