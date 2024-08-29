@@ -2330,6 +2330,23 @@
     )
   )
 
+  (sheet (at 134.62 16.891) (size 29.21 17.018) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 6cf2d612-8129-4b9a-9cb3-eb8429f58846)
+    (property "Sheetname" "Audio" (at 134.62 16.1794 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "CoPicoVision_audio.kicad_sch" (at 134.62 34.4936 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CoPicoVision"
+        (path "/d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4" (page "5"))
+      )
+    )
+  )
+
   (sheet (at 17.653 16.891) (size 32.893 16.002) (fields_autoplaced)
     (stroke (width 0.1524) (type solid))
     (fill (color 0 0 0 0.0000))
