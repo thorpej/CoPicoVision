@@ -45,6 +45,17 @@ version of the CoPicoVision.  But for now, a genuine Z80 must be used.
 ## Design details
 
 ### Power supply
+The power supply is fairly simple, since we don't need the -12V rail that's
+found on the original ColecoVision.  We do, however, require a -5V rail, which
+is used as a bias voltage in the controller interface circuit.
+
+Power comes in via a USB-C connector (with ESD protection diodes on the
+control channel signals).  Power is switched using a MAX16054 on/off
+supervisor chip that controls a high-side P-FET to supply power to the
+rest of the system.  The MAX16054 is controlled using a single momentary
+pushbutton.
+
+The -5V rail is generated using an ICL7660A charge pump chip.
 
 ### Clock and reset generation
 The clock circuit on the CoPicoVision is as simple as it gets: it's simply
@@ -82,6 +93,9 @@ The CoPicoVision's RAM is an AS6C6264-55PCN, which is an 8KB 55ns SRAM
 chip, only 1KB of which is used.
 
 ### Audio
+The audio section is identical to the original ColecoVision, except the
+output is buffered by an emitter-follower and then AC-coupled to both
+outputs of a 3.5mm TRS phone jack.
 
 ### Video
 Of course, the video circuit is built using a Raspberry Pi Pico running a
