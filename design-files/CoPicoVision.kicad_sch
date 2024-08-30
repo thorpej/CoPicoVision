@@ -1893,7 +1893,7 @@
   (no_connect (at 272.796 157.48) (uuid 62b00f98-cdfb-4b66-852b-7a4ef31b8b3c))
   (no_connect (at 201.676 161.925) (uuid 64868744-c99c-467c-a097-4b75f8839b59))
   (no_connect (at 179.197 154.559) (uuid 6ba465e7-e23c-4fa0-8080-c37ffb6d31d3))
-  (no_connect (at 272.669 138.557) (uuid 7393ef25-fbf2-453a-88a9-bae1a544c21a))
+  (no_connect (at 272.796 138.557) (uuid 7393ef25-fbf2-453a-88a9-bae1a544c21a))
   (no_connect (at 29.845 113.792) (uuid 874298ba-f7cb-4b65-ad08-9f2e4839b62b))
   (no_connect (at 98.552 170.434) (uuid 90986450-f08f-47da-a248-2f5ae320a288))
   (no_connect (at 201.676 154.305) (uuid ac905ff5-514c-4cfe-bf77-900763fe2c08))
@@ -2154,6 +2154,11 @@
   (wire (pts (xy 20.32 183.388) (xy 31.369 183.388))
     (stroke (width 0) (type default))
     (uuid ffb358e2-5ece-4159-bc8a-e5d04b848a8a)
+  )
+
+  (label "VBUS" (at 114.173 50.165 90) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid c77fd33c-0fbd-4c09-8009-c0dc7f52a371)
   )
 
   (global_label "A14" (shape input) (at 205.232 122.936 0) (fields_autoplaced)

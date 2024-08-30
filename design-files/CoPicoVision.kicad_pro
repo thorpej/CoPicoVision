@@ -452,26 +452,13 @@
     "netclass_assignments": {
       "+3V3": "Power",
       "-5V": "Power",
+      "/VBUS": "Power",
       "GND": "Power",
       "Net-(D101-A)": "Power",
       "Net-(D301-K)": "Power",
-      "Net-(Q101-S)": "Power",
       "VCC": "Power"
     },
-    "netclass_patterns": [
-      {
-        "netclass": "Power",
-        "pattern": "VCC"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "*3V3"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "*-5V"
-      }
-    ]
+    "netclass_patterns": []
   },
   "pcbnew": {
     "last_paths": {
