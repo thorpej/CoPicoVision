@@ -1783,6 +1783,13 @@
       (effects (font (size 1.27 1.27) italic) (justify left))
     )
   )
+  (netclass_flag "" (length 2.54) (shape diamond) (at 186.563 106.172 0) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 9ab1208d-1bc8-498a-9e4b-c2693e78357a)
+    (property "Netclass" "Power" (at 187.7695 103.632 0)
+      (effects (font (size 1.27 1.27) italic) (justify left))
+    )
+  )
 
   (symbol (lib_id "74xx:74LS05") (at 133.223 25.781 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
@@ -1997,7 +2004,7 @@
     (property "Datasheet" "" (at 132.588 38.862 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 44abdc10-4be8-4fd0-9741-86e334070c1c))
+    (pin "1" (uuid 862b49fe-e09e-443c-95bc-be259b025316))
     (instances
       (project "CoPicoVision"
         (path "/d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4/cddb2abf-ae9c-4f12-8059-bd0591c2bb33"
