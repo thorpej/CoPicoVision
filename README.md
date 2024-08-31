@@ -1,8 +1,18 @@
-# CoPicoVision - A ColecoVision clone using a Raspberry Pi Pico and pico9918 for video
+# CoPicoVision - A ColecoVision clone using a Raspberry Pi Pico with pico9918 for video
 The CoPicoVision stems from another bout of nostalgia.  When I was a kid, I got
 a ColecoVision one Christmas and I played the h*ll out of it.  Alas, I no longer
 have it, but I wish I still did, and building a clone seems a lot more fun than
 over-paying for one on eBay.
+
+Ok, fine, it also serves as a test mule for using modified variants of
+Troy Schrapel's excellent
+[pico9918](https://github.com/visrealm/pico9918) project, and test mules that
+can play Mr. Do! and Zaxxon are the best kinds of test mules.
+
+This work is licensed under the [Creative Commons Attribution
+ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa/4.0/).
+
+![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Design philosophy
 My goal is to play ColecoVision games, not to produce a faithful clone of the
@@ -48,8 +58,8 @@ considered doing an all-SMT board (except for the stuff that was only
 available as through-hole), but I ultimately decided against it in order
 to try and keep a more retro look.  I did, however, go with mostly all
 SMT parts in the power supply since at least one of the parts I wanted to
-use there was only available in SMT.  Ultimately, this prooved necessary
-in order to be able to sweeze everything onto the board (I wanted to make
+use there was only available in SMT.  Ultimately, this proved necessary
+in order to be able to sweeze everything onto the board (I wanted to have
 at least a little clear board space for some silk screen markings).
 
 The board is 4 layers: signals (and ground fill) top and bottom, along with
