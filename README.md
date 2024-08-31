@@ -43,6 +43,30 @@ to see if it's feasible to use one of those with an iCE40 FPGA in an updated
 version of the CoPicoVision.  But for now, a genuine Z80 must be used.
 
 ## Design details
+I spent some time mulling over how I wanted to approach this board.  I
+considered doing an all-SMT board (except for the stuff that was only
+available as through-hole), but I ultimately decided against it in order
+to try and keep a more retro look.  I did, however, go with mostly all
+SMT parts in the power supply since at least one of the parts I wanted to
+use there was only available in SMT.  Ultimately, this prooved necessary
+in order to be able to sweeze everything onto the board (I wanted to make
+at least a little clear board space for some silk screen markings).
+
+The board is 4 layers: signals (and ground fill) top and bottom, along with
+an internal ground plane and power plane.  I arrived at the size of the board
+through experimentation; essentially, I did a rough layout of the board into
+what I thought "looked pretty good", placed mounting holes and keep-outs, and
+then drew an edge-cut box around it.  Once the box was drawn, I tried to stay
+within that envelope.  I'm a total novice when I comes to PCB layout and
+design, and I routed the entire board by hand, but did manage to make it fit.
+Some signals are routed, ahem, interestingly, but this isn't a high-speed
+design so it should be just fine.
+
+The font of the board has power and reset buttons and the 2 controller
+ports.  The read of the board has power, audio, and VGA jacks, along with
+the USB connector for the Raspberry Pi Pico in case there's a need to
+update the pico9918 firmware.  There's a diode in between the Pico and
+the rest of the board, so it's safe to update the firmware in situ.
 
 ### Power supply
 The power supply is fairly simple, since we don't need the -12V rail that's
