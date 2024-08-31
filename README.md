@@ -9,6 +9,8 @@ Troy Schrapel's excellent
 [pico9918](https://github.com/visrealm/pico9918) project, and test mules that
 can play Mr. Do! and Zaxxon are the best kinds of test mules.
 
+![3D render of board image](CoPicoVision-pcb-render.png)
+
 This work is licensed under the [Creative Commons Attribution
 ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa/4.0/).
 
