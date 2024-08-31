@@ -119,6 +119,24 @@ transceiver, and the direction of the transceiver is controlled by /VDPWSEL.
 The VGA resistor DAC is identical to the pico9918's.
 
 ### Controller interface
+The controller interface is derived more or less straight from the
+ColecoVision, except the quad-NAND gate is replaced with a 74HCT part.
+The controller input buffers are the same 74LS541 used on the original
+because the circuit relies on Schmitt trigger inputs and the standard
+CMOS replacement parts don't have them.  Eventually I may experiment with
+the 74HCS541 as a replacement.
+
+One difference is that I made both controller inputs indentical; in the
+original, it seems that one controller input was drawn in a "mirror image"
+and the bit order on it's buffer swapped to compensate.  That seemed
+needlessly confusing to me, so I just made them both the same (I literally
+copy-and-pasted, and then tweaked some net labels to make the second
+instance).
+
+The controller interface is by far the most complicated block on the system.
+I have a basic understanding of how it works, but there is clearly some subtle
+analog magic going on, so I decided not to push my luck.  I don't have any
+of the quadrature controllers to test with at this time.
 
 ## Acknowledgements
 First of all, I want to say that I was inspired to take a crack at this by the
