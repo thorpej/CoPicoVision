@@ -63,7 +63,7 @@ Some signals are routed, ahem, interestingly, but this isn't a high-speed
 design so it should be just fine.
 
 The font of the board has power and reset buttons and the 2 controller
-ports.  The read of the board has power, audio, and VGA jacks, along with
+ports.  The rear of the board has power, audio, and VGA jacks, along with
 the USB connector for the Raspberry Pi Pico in case there's a need to
 update the pico9918 firmware.  There's a diode in between the Pico and
 the rest of the board, so it's safe to update the firmware in situ.
@@ -104,7 +104,8 @@ to implement a wait-state generator when the Z80 performs an opcode fetch.
 It does this presumably to give some extra breathing room to slow ROMs (of
 the Z80 machine cycles, M1 has the tightest timing).  There is plenty of
 left-over space in the decoder GALs, so I put it in the MEMDEC GAL (since
-it's about the opcode fetch from memory).
+it's about the opcode fetch from memory).  There is a large comment in
+the MEMDEC GAL source file that explains how the wait-state generator works.
 
 The BIOS ROM for the CoPicoVision is contained in a 150ns 28C64 EEPROM.
 I chose this part because:
@@ -171,3 +172,9 @@ reverse-engineered [ColecoVision schematics](https://forums.atariage.com/topic/2
 
 And finally, massive thanks to Troy for his fantastic [pico9918](https://github.com/visrealm/pico9918).
 It's truly what makes the CoPicoVision possible.
+
+If you have any questions about the board, you can reach out to me on
+Twitter (*[@thorpej](https://twitter.com/thorpej)*) or Mastodon
+(*[@thorpej@mastodon.sdf.org](https://mastodon.sdf.org/@thorpej)*).  You
+can also check out my [YouTube channel](https://www.youtube.com/@thorpejsf),
+which has this and other retrocomputing related content.
