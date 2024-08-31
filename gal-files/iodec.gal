@@ -1,18 +1,11 @@
 GAL22V10
 IODEC
 
-/IORQ /WR A5 A6  A7     NC      NC     NC      NC       NC       NC     GND
+/IORQ /WR A5 A6  A7     NC      NC      NC     NC       NC       NC     GND
  NC    NC NC NC /CRSEL /C1WSEL /C2WSEL /VDPEN /VDPWSEL /VDPRSEL /SNWSEL VCC
 
 ;
-; This implements two functions for the CoPicoVision:
-;
-; - I/O space address decoding (our main purpose in life).
-; - M1 wait-state generation (because we have some space).
-;
-
-;
-; I/O address decode.
+; This implements I/O space address decoding for the CoPicoVision.
 ;
 ; The ColecoVision has the following I/O space address map:
 ;
