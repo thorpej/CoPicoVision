@@ -8332,7 +8332,7 @@
     (property "ki_keywords" "LED diode")
     (path "/7aa68ab3-d183-4711-aafa-e315766905c3")
     (attr through_hole)
-    (fp_text reference "D103" (at 1.27 -2.96 90) (layer "F.SilkS")
+    (fp_text reference "D103" (at -1.773 0 -180) (layer "F.SilkS")
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp f0cb4afc-815a-45aa-9e22-cc08222941a3)
     )
