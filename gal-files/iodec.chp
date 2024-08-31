@@ -5,19 +5,19 @@
                           -------\___/-------
                     /IORQ |  1           24 | VCC
                           |                 |
-                      /WR |  2           23 | /CRSEL
+                      /WR |  2           23 | /SNWSEL
                           |                 |
-                       A5 |  3           22 | /SNWSEL
+                       A5 |  3           22 | /VDPRSEL
                           |                 |
-                       A6 |  4           21 | /VDPRSEL
+                       A6 |  4           21 | /VDPWSEL
                           |                 |
-                       A7 |  5           20 | /VDPWSEL
+                       A7 |  5           20 | /VDPEN
                           |                 |
-                       NC |  6           19 | /VDPEN
+                       NC |  6           19 | /C2WSEL
                           |                 |
-                       NC |  7           18 | /C2WSEL
+                       NC |  7           18 | /C1WSEL
                           |                 |
-                       NC |  8           17 | /C1WSEL
+                       NC |  8           17 | /CRSEL
                           |                 |
                        NC |  9           16 | NC
                           |                 |

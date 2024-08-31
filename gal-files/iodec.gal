@@ -1,8 +1,8 @@
 GAL22V10
 IODEC
 
-/IORQ /WR A5 A6  A7      NC      NC     NC       NC       NC      NC    GND
- NC    NC NC NC /C1WSEL /C2WSEL /VDPEN /VDPWSEL /VDPRSEL /SNWSEL /CRSEL VCC
+/IORQ /WR A5 A6  A7     NC      NC     NC      NC       NC       NC     GND
+ NC    NC NC NC /CRSEL /C1WSEL /C2WSEL /VDPEN /VDPWSEL /VDPRSEL /SNWSEL VCC
 
 ;
 ; This implements two functions for the CoPicoVision:
@@ -16,9 +16,9 @@ IODEC
 ;
 ; The ColecoVision has the following I/O space address map:
 ;
-; $80 (w)   - Enable Controller 2
+; $80 (w)   - Enable controller scan mode 2 (number pad)
 ; $A0 (r/w) - VDP
-; $C0 (w)   - Enable Controller 1
+; $C0 (w)   - Enable controller scan mode 1 (joystick)
 ; $E0 (r)   - Controller read
 ; $E0 (w)   - SN76489AN sound chip
 ;
