@@ -80,6 +80,12 @@ the USB connector for the Raspberry Pi Pico in case there's a need to
 update the pico9918 firmware.  There's a diode in between the Pico and
 the rest of the board, so it's safe to update the firmware in situ.
 
+I've included a bill of materials with Mouser part numbers for just about
+everything; the jellybean SMT resistors / capacitors (in standard 0805 case)
+and the jellybean carbon film THT resistors (BoM indicates the footprint
+constraints) are left as an exercise for the reader.  Same goes for chip
+sockets.
+
 ### Power supply
 The power supply is fairly simple, since we don't need the -12V rail that's
 found on the original ColecoVision.  We do, however, require a -5V rail, which
