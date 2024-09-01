@@ -1,13 +1,16 @@
 # CoPicoVision - A ColecoVision clone using a Raspberry Pi Pico with pico9918 for video
-The CoPicoVision stems from another bout of nostalgia.  When I was a kid, I got
-a ColecoVision one Christmas and I played the h*ll out of it.  Alas, I no longer
-have it, but I wish I still did, and building a clone seems a lot more fun than
-over-paying for one on eBay.
+The CoPicoVision stems from yet another bout of nostalgia for a time before
+photorealistic video games, when all we had was blocky tile graphics and a
+few bleeps and bloops and gosh darn it, we liked it!  When I was a kid, I got
+a ColecoVision one Christmas and I played the h*ll out of it.  Alas, I no
+longer have it, but I wish I still did, and building a clone seems a lot more
+fun than over-paying for one on eBay.
 
-Ok, fine, it also serves as a test mule for using modified variants of
-Troy Schrapel's excellent
-[pico9918](https://github.com/visrealm/pico9918) project, and test mules that
-can play Mr. Do! and Zaxxon are the best kinds of test mules.
+Ok, fine, I have a second motive: It also serves as a test mule for using
+modified variants of Troy Schrapel's excellent
+[pico9918](https://github.com/visrealm/pico9918) project, something I'm
+considering using in other projects, and test mules that can play Mr. Do!
+and Zaxxon (yes, yes, yes, and Donkey Kong) are the best kinds of test mules.
 
 ![3D render of board image](CoPicoVision-pcb-render.png)
 
@@ -15,6 +18,15 @@ This work is licensed under the [Creative Commons Attribution
 ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa/4.0/).
 
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
+
+## Project Status
+The initial "rev 0.1" hardware design is done and ready to send off for
+fabrication.  There is some software work to do on the pico9918 side of
+things, but the changes I have in mind are trivial.  My plan is to wrap
+my changes in proper configuration options and feed those changes back
+to Troy.
+
+So, yah, it's early!  Watch this space!
 
 ## Design philosophy
 My goal is to play ColecoVision games, not to produce a faithful clone of the
