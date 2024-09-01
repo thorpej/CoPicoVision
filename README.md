@@ -73,7 +73,7 @@ available as through-hole), but I ultimately decided against it in order
 to try and keep a more retro look.  I did, however, go with mostly all
 SMT parts in the power supply since at least one of the parts I wanted to
 use there was only available in SMT.  Ultimately, this proved necessary
-in order to be able to sweeze everything onto the board (I wanted to have
+in order to be able to squeeze everything onto the board (I wanted to have
 at least a little clear board space for some silk screen markings).
 
 The board is 4 layers: signals (and ground fill) top and bottom, along with
@@ -130,19 +130,18 @@ some extra logic to invert some of the signals used by the decoders.  By
 using GALs for this purpose, I save the extra logic chips.
 
 The ColecoVision also uses a 74LS74 along with some additional logic gates
-to implement a wait-state generator when the Z80 performs an opcode fetch.
-It does this presumably to give some extra breathing room to slow ROMs (of
-the Z80 machine cycles, M1 has the tightest timing).  There is plenty of
-left-over space in the decoder GALs, so I put it in the MEMDEC GAL (since
-it's about the opcode fetch from memory).  There is a large comment in
-the MEMDEC GAL source file that explains how the wait-state generator works.
+to add a wait-state when the Z80 performs an opcode fetch.  It does this
+presumably to give some extra breathing room to slow ROMs (of the Z80 machine
+cycles, M1 has the tightest timing).  There is plenty of left-over space in
+the decoder GALs, so I put it in the MEMDEC GAL (since it's about the opcode
+fetch from memory).  There is a large comment in the MEMDEC GAL source file
+that explains how the wait-state generator works.
 
 The BIOS ROM for the CoPicoVision is contained in a 150ns 28C64 EEPROM.
 I chose this part because:
 * I have a bunch of them on-hand.
 * They're totally fast enough.
 * They're still being made and you can buy them new from Mouser and DigiKey.
-* They're easy to program with Arduino-based home-brew EEPROM programmers.
 
 The CoPicoVision's RAM is an AS6C6264-55PCN, which is an 8KB 55ns SRAM
 chip, only 1KB of which is used.
