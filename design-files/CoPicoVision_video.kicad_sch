@@ -4,6 +4,13 @@
 
   (paper "A4")
 
+  (title_block
+    (title "CoPicoVision")
+    (date "2024-08-31")
+    (rev "0.1")
+    (company "(c) 2024 Jason R. Thorpe.  See LICENSE.")
+  )
+
   (lib_symbols
     (symbol "74xx:74HC245" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)
       (property "Reference" "U" (at -7.62 16.51 0)

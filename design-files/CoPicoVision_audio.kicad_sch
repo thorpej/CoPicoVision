@@ -4,6 +4,13 @@
 
   (paper "A4")
 
+  (title_block
+    (title "CoPicoVision")
+    (date "2024-08-31")
+    (rev "0.1")
+    (company "(c) 2024 Jason R. Thorpe.  See LICENSE.")
+  )
+
   (lib_symbols
     (symbol "Connector_Audio:AudioJack3" (in_bom yes) (on_board yes)
       (property "Reference" "J" (at 0 8.89 0)
