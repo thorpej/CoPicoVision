@@ -1,6 +1,7 @@
 #!/bin/sh -
+
 #
-# Build the CoPicoVersion if the pico9918 firmware.
+# Build the CoPicoVision version of the pico9918 firmware.
 #
 
 FIRMWARE_DIR=$PWD
