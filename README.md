@@ -20,6 +20,12 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Sept 1, 2024
+I made forks of pico9918 and vrEmuTms9918 in order to make the changes
+needed for CoPicoVision, and then went ahead and made all of those
+changes.  Initial firmware version checked in!
+
+### Initial - Aug 31, 2024
 The initial "rev 0.1" hardware design is done and ready to send off for
 fabrication.  There is some software work to do on the pico9918 side of
 things, but the changes I have in mind are trivial.  My plan is to wrap
