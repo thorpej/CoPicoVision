@@ -20,6 +20,10 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Sept 2, 2024
+I made some small adjustments to the PCB, and sent rev 0.1 off for
+fabrication!
+
 ### Update - Sept 1, 2024
 I made forks of pico9918 and vrEmuTms9918 in order to make the changes
 needed for CoPicoVision, and then went ahead and made all of those
