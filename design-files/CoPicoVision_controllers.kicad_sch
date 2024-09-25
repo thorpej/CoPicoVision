@@ -2554,7 +2554,7 @@
     (property "Reference" "R402" (at 147.32 180.34 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "210R" (at 147.32 182.88 0)
+    (property "Value" "220R" (at 147.32 182.88 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" (at 144.78 180.975 0)
@@ -2807,12 +2807,12 @@
   )
 
   (symbol (lib_id "Device:R_Small") (at 144.78 175.895 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (in_bom yes) (on_board yes) (dnp no)
     (uuid 2b851cd5-5289-434e-b855-d49f307172a3)
     (property "Reference" "R401" (at 147.32 175.26 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "210R" (at 147.32 177.8 0)
+    (property "Value" "220R" (at 147.32 177.8 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" (at 144.78 175.895 0)
@@ -2821,8 +2821,8 @@
     (property "Datasheet" "~" (at 144.78 175.895 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 4a46839c-8210-43ab-8d21-63cbae16ebbd))
-    (pin "2" (uuid ec08a377-7ee6-4ce2-99c7-549164988714))
+    (pin "1" (uuid 4a62428e-6fc3-4b5c-bdce-85a8fd9a4694))
+    (pin "2" (uuid 32e3bdec-6da3-405f-9473-f8d4ae965ab7))
     (instances
       (project "CoPicoVision"
         (path "/d4d4c0fa-7a39-4b72-9fdb-c481b1e41ed4/e0ac0253-c368-4a00-80da-4eff7e9af602"
