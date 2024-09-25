@@ -20,6 +20,11 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Sept 24, 2024
+Boards have been back for a while now, and I finally got around to starting
+to build one up.  Thought I had all of the resistors I needed in my inventory,
+but alas, I did not, so need to place a Jameco order!
+
 ### Update - Sept 2, 2024
 I made some small adjustments to the PCB, and sent rev 0.1 off for
 fabrication!
