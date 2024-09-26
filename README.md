@@ -68,7 +68,7 @@ a compatible part, and there are open source tools for programming them, so the
 design is still very accessible.
 
 There are two "vintage" parts that are required for the CoPicoVision:
-* A Z80 CPU in a DIP-40 package.
+* A 4MHz-capable Z80 CPU in a DIP-40 package.
 * A TI SN76489AN sound chip.
 
 Eventually, I'd like to replace the SN76489AN with an emulated part, (almost
@@ -76,8 +76,8 @@ certainly using a Pi Pico), but for now the real thing needs to be sourced.
 
 Obviously, with the Z80 now being EOL'd, that poses a bit of a snag.  Luckily,
 I have a stash of modern CMOS Z80s, and this design will also accept a vintage
-NMOS Z80.  The CPU is clocked at 3.57MHz, so any DIP-40 Z80 should work just
-fine.  Maybe one day I'll evaluate one of the FPGA Z80 cores floating around
+NMOS Z80.  The CPU is clocked at 3.57MHz, so a Z80A or better is necessary.
+Maybe one day I'll evaluate one of the FPGA Z80 cores floating around
 to see if it's feasible to use one of those with an iCE40 FPGA in an updated
 version of the CoPicoVision.  But for now, a genuine Z80 must be used.
 
