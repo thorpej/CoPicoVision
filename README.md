@@ -181,7 +181,7 @@ level shift.  This works perfectly fine since I've arranged for everything
 on the 5V side to use TTL logic levels.  One transceiver is hard-wired for
 the B->A direction and level-shifts the A0, /VDPWSEL, /VDPRSEL, and /RESET
 input signals.  The other transceiver level-shifts the data bus and takes
-care of swizzing the bit order between the VDP and the Z80.  The IODEC GAL
+care of swizzling the bit order between the VDP and the Z80.  The IODEC GAL
 generates an extra signal that's used to enable the output of the data bus
 transceiver, and the direction of the transceiver is controlled by /VDPWSEL.
 
