@@ -21,6 +21,21 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 
 ## Project Status
 ### Update - Oct 11, 2024
+Built up the controller section and played some Donkey Kong!  I did make
+a mistake on the controller section, however.  Controller 1 and 2 are
+swapped.  I will correct this in the next revision of the board, and will
+figure out a bodge for the rev 0.1 boards that I've already run off.
+
+There also a mistake in the physical placement of the card edge connector
+for the cartridge.  It's a few millimeters too close to the front of the
+board, and so the cartridge bumps into one of the 2N3904s in the controller
+circuit and the cartridge doesn't quite align with the silk screen outline.
+That's going to be a little tricker to fix because I might have to re-route
+some of the board, but I'll fix that up as well.
+
+Guess I should build the audio section next!
+
+### Update - Oct 10, 2024
 After replacing a bad oscillator, the first test board is working!  I have
 not yet installed the audio or controller circuitry yet, but I can boot up
 Donkey Kong and Buck Rogers, and, due to the lack of controller circuitry
