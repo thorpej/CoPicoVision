@@ -20,6 +20,12 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Oct 11, 2024
+After replacing a bad oscillator, the first test board is working!  I have
+not yet installed the audio or controller circuitry yet, but I can boot up
+Donkey Kong and Buck Rogers, and, due to the lack of controller circuitry
+being misinterpreted as input, game play starts!
+
 ### Update - Sept 24, 2024
 Boards have been back for a while now, and I finally got around to starting
 to build one up.  Thought I had all of the resistors I needed in my inventory,
