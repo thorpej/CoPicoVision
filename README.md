@@ -228,6 +228,21 @@ I have a basic understanding of how it works, but there is clearly some subtle
 analog magic going on, so I decided not to push my luck.  I don't have any
 of the quadrature controllers to test with at this time.
 
+## Errata
+Rev 0.1 of the CoPicoVision has the following bugs:
+* Controller 1 and Controller 2 are swapped due to a silly mistake in
+the selection logic.  A bodge is under investigation, or you can just
+live with it.
+* The card edge connector for the cartridge is about 2mm too close to the
+front of the board.  This was due to a measurement error.  As a result, the
+cartridge does not fit within the silkscreen outline on the PCB and the front
+of the cartridge may bump into the back of Q402.  You may need to bend Q402
+forward a little in order to get the cartridge to seat properly.  I plan to
+adjust this in the next board revision, but it may require rerouting several
+signals.
+* More bugs may yet be discovered; I have not yet put together the audio
+section or tested with 2 controllers.
+
 ## Acknowledgements
 First of all, I want to say that I was inspired to take a crack at this by the
 Leako project, which you can read about [here](https://www.leadedsolder.com/tag/leako).
