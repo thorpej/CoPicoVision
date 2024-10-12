@@ -23,8 +23,9 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ### Update - Oct 11, 2024
 Built up the controller section and played some Donkey Kong!  I did make
 a mistake on the controller section, however.  Controller 1 and 2 are
-swapped.  I will correct this in the next revision of the board, and will
-figure out a bodge for the rev 0.1 boards that I've already run off.
+swapped.  I will correct this in the next revision of the board, and there
+is a [procedure](errata/rev0_1_controller_bodge.md) to fix the rev 0.1 boards
+that I've already run off.
 
 There also a mistake in the physical placement of the card edge connector
 for the cartridge.  It's a few millimeters too close to the front of the
