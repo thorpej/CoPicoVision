@@ -231,8 +231,8 @@ of the quadrature controllers to test with at this time.
 ## Errata
 Rev 0.1 of the CoPicoVision has the following bugs:
 * Controller 1 and Controller 2 are swapped due to a silly mistake in
-the selection logic.  A bodge is under investigation, or you can just
-live with it.
+the selection logic.  [This procedure](errata/rev0_1_controller_bodge.md)
+will correct the problem, or you can just live it it.
 * The card edge connector for the cartridge is about 2mm too close to the
 front of the board.  This was due to a measurement error.  As a result, the
 cartridge does not fit within the silkscreen outline on the PCB and the front
