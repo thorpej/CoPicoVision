@@ -20,6 +20,10 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Oct 12, 2024
+I've updated the schematic and PCB to fix the swapped controller bug in
+the rev 0.1 boards, and bumped the revision to 0.2.
+
 ### Update - Oct 11, 2024
 Built up the controller section and played some Donkey Kong!  I did make
 a mistake on the controller section, however.  Controller 1 and 2 are
