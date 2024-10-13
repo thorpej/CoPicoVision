@@ -24,6 +24,19 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 I've updated the schematic and PCB to fix the swapped controller bug in
 the rev 0.1 boards, and bumped the revision to 0.2.
 
+I've also built up the audio section of the board and confirmed that it
+works.  It's not ideal, though:
+* The footprint for the resistor in the emitter-follower is wrong, so even
+the relatively-small 1/2 watt resistor I spec'd doesn't quite fit.
+* I should have put a current-limiting resistor between the SN76489AN and
+the emitter-follower.  It works as it is, but the current setup has the
+SN76489AN sourcing more current than it really ought to.  (Maybe I should
+have just used a 2N7000 in a source-follower configuration instead?)
+* The output is pretty noisy.  It's not _distorted_, but there's hiss and
+other audio artifacts.  I remember the original ColecoVision being this
+way, but always assumed it was the fault of the RF modulator.  I may bodge
+in a passive low-pass filter to cut down on the noise.
+
 ### Update - Oct 11, 2024
 Built up the controller section and played some Donkey Kong!  I did make
 a mistake on the controller section, however.  Controller 1 and 2 are
