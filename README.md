@@ -20,6 +20,17 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Nov 10, 2024
+I finally got a chance to get set up with some powered speakers (with a
+volume control) to get a better sense of how the audio section behaves.
+With the AudioEngine 2+ speakers I tested with, the noise isn't really
+that bad at all, and it definitely seems to be a property of the SN76489AN
+(placing my finger on top of the chip while running makes an audible
+different in the noise profile).
+
+I haven't yet bodged the audio section changes in revision 0.2 onto this
+revision 0.1 board.  I really should try to do that soon and re-evaluate.
+
 ### Update - Oct 12, 2024
 I've updated the schematic and PCB to fix the swapped controller bug in
 the rev 0.1 boards, and bumped the revision to 0.2.
