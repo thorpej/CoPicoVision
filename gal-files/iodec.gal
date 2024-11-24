@@ -25,5 +25,4 @@ SNWSEL  = A7 *  A6 *  A5 * IORQ *  WR		; $E0 writes
 
 DESCRIPTION
 
-This is the I/O address decoder and M1 wait-state generator for the
-CoPicoVision.
+This is the I/O address decoder for the CoPicoVision.
