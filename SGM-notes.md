@@ -22,9 +22,87 @@ before the cartridge area).
 We could easily implement this on the CoPicoVision with a few small
 changes:
 * Define an XRAMEN signal that, when asserted, enables the extended RAM.
-* Define a ROMDIS signal that, when asserted, disables reading the ROM.
+  This signal should default to de-asserted at reset.
+* Define a ROMEN signal that, when asserted, enables reading the ROM.
+  This signal should default to asserted at reset.
 * Replace the 6C6264 with a 6C62256, giving us 32KB of RAM total.
-* Addition of a mux for RAM address lines A10 - A14.
 * Changes to the address decoding logic.
+
+Now would the address lines to the 6C2256 be connected and how would the
+decoding work?  The CoPicoVision asserts /RAMSEL when A13 and A14 are high
+and A15 is low.  Since A13 and A14 are a fixed value when XRAMEN is not
+asserted, we don't need to mux those -- they can simply be connected
+directly to the RAM chip, and only the lower 1KB of the upper 8KB of the
+chip will be used.  A0-A9 can also be connected directly, as they are in
+the standard configuration.  We just need to deal with A10-A12.  When
+XRAMEN is disabled, we want A10-A12 to be fixed low so that we get the
+mirroring behavior of the original circuit.  But when XRAMEN is enabled,
+we want A10-A12 to be passed through from the Z80.  This is super easy
+to do with just a 74HCT08 quad-AND chip:
+
+       A10 --+
+             +-- AND -> RA10
+    XRAMEN --+
+
+       A11 --+
+             +-- AND -> RA11
+    XRAMEN --+
+
+       A12 --+
+             +-- AND -> RA12
+    XRAMEN --+
+
+Thinking about the ROM and the RAM trapped "beneath" it... it seems like
+it would be handy to write to that RAM even when the ROM is enabled.  This
+would enable game code to copy the ROM if desired, or let game code otherwise
+initialize that RAM before disabling the ROM.  This is pretty easy to do; we
+can add the /RD signal as an input to the MEMDEC GAL.
+
+So, how do we want to generate the XRAMEN and ROMEN signals?  In the SGM,
+extended RAM is enabled by writing 0b00000001 to port $53.  Because of
+the need to maintain Adam compatibility, the SGM has this to say about
+disabling the ROM:
+* Write 0b00001111 to port $7F to enable the ROM.
+* Write 0b00001101 to port $7F to disable the ROM.
+
+Obviously the ROM needs to default to "enabled" at reset.
+
+Also, we're not an Adam, so we don't particularly need all of the bits
+in those registers.  I am pretty sure the registers themselves are also
+write-only, so there's not even any real need to emulate them.
+
+This sounds like a perfect situation for a 74HCT74: dual D-type
+positive-edge-triggered flip-flops with Clear and Preset.  Each flip-flop
+is completely independent, with its own /CLR and /PRE inputs.  So we
+can use them as follows:
+* FF1's D input is connected to D0, Q output connected to XRAMEN,
+/PRE input connected to Vcc, and /CLR input connected to /RESET.
+* FF2's D input is connected to D1, Q output connected to ROMEN,
+/PRE input connected to /RESET, and /CLR input connected to Vcc.
+
+Each FF would get a clock input from the IODEC address decoder, call them
+/FF1SEL and /FF2SEL for now.
+
+The base CoPicoVision MEMDEC GAL has the following connections:
+
+    CLK M1 /MREQ   /RFSH      A13       A14      A15      NC     NC NC  NC     GND
+    NC  NC  M1WAIT /CRTESEL  /CRTCSEL  /CRTASEL /CRT8SEL /RAMSEL NC NC /ROMSEL VCC
+
+We know we need to add /RD, XRAMEN, and ROMEN as inputs.  Unfortunately,
+there aren't enough available outputs to use the MEMDEC GAL for A10-A12,
+so we'll have to add a 74HCT08 to the board.
+
+So, with that in mind, here's what the new GAL equations for /ROMSEL and
+/RAMSEL could look like:
+
+    CLK M1 /MREQ   /RFSH      A13       A14      A15     /RD     XRAMEN ROMEN  NC     GND
+    NC  NC  M1WAIT /CRTESEL  /CRTCSEL  /CRTASEL /CRT8SEL /RAMSEL NC     NC    /ROMSEL VCC
+
+    ROMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH *  RD *  ROMEN ; ROM reads, ROM enabled
+    RAMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH *  RD * /ROMEN ; ROM reads, ROM disabled
+             + /A15 * /A14 * /A13 * MREQ * /RFSH * /RD          ; ROM writes
+             + /A15 * /A14 *  A13 * MREQ * /RFSH * XRAMEN       ; XRAM $2000
+             + /A15 *  A14 * /A13 * MREQ * /RFSH * XRAMEN       ; XRAM $4000
+             + /A15 *  A14 *  A13 * MREQ * /RFSH                ; base RAM
 
 More thoughts to come...
