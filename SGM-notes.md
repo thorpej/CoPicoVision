@@ -105,4 +105,46 @@ So, with that in mind, here's what the new GAL equations for /ROMSEL and
              + /A15 *  A14 * /A13 * MREQ * /RFSH * XRAMEN       ; XRAM $4000
              + /A15 *  A14 *  A13 * MREQ * /RFSH                ; base RAM
 
+Now let's take a look at what we need to change in the I/O address
+decoding.  The base CoPicoVision IODEC GAL looks like this:
+
+    /IORQ /WR A5 A6  A7     NC      NC      NC     NC       NC       NC     GND
+     NC    NC NC NC /CRSEL /C1WSEL /C2WSEL /VDPEN /VDPWSEL /VDPRSEL /SNWSEL VCC
+
+    C2WSEL  = A7 * /A6 * /A5 * IORQ *  WR		; $80 writes
+    VDPRSEL = A7 * /A6 *  A5 * IORQ * /WR		; $A0 reads
+    VDPWSEL = A7 * /A6 *  A5 * IORQ *  WR		; $A0 writes
+    VDPEN   = A7 * /A6 *  A5 * IORQ			; enable VDP transceiver
+    C1WSEL  = A7 *  A6 * /A5 * IORQ *  WR		; $C0 writes
+    CRSEL   = A7 *  A6 *  A5 * IORQ * /WR		; $E0 reads
+    SNWSEL  = A7 *  A6 *  A5 * IORQ *  WR		; $E0 writes
+
+Because we need to decode $53 and $7F, we're going to need to get all
+8 of I/O port address bits connected to the GAL.
+
+We need to generate a positive-edge clock pulse for the extended memory
+FF's when they are written.  Looking at the Z80 I/O cycle timing diagram,
+we can see that D0-D7 will be valid until the end of T3, and the /WR signal
+is de-asserted before the end of T3, so that will do exactly what we need
+in order to generate those.
+
+So, with that, it looks like:
+
+    /IORQ /WR  A0       A1       A2     A3      A4      A5     A6       A7       NC     GND
+     NC    NC /FF1WSEL /FF2WSEL /CRSEL /C1WSEL /C2WSEL /VDPEN /VDPWSEL /VDPRSEL /SNWSEL VCC
+
+    FF1WSEL = /A7 * A6 * /A5 * A4 * /A3 * /A2 * A1 * A0 * IORQ * WR ; $53 writes
+    FF2WSEL = /A7 * A6 *  A5 * A4 *  A3 *  A2 * A1 * A0 * IORQ * WR ; $7F writes
+
+    C2WSEL  = A7 * /A6 * /A5 * IORQ *  WR		; $80 writes
+    VDPRSEL = A7 * /A6 *  A5 * IORQ * /WR		; $A0 reads
+    VDPWSEL = A7 * /A6 *  A5 * IORQ *  WR		; $A0 writes
+    VDPEN   = A7 * /A6 *  A5 * IORQ			; enable VDP transceiver
+    C1WSEL  = A7 *  A6 * /A5 * IORQ *  WR		; $C0 writes
+    CRSEL   = A7 *  A6 *  A5 * IORQ * /WR		; $E0 reads
+    SNWSEL  = A7 *  A6 *  A5 * IORQ *  WR		; $E0 writes
+
+...which leaves one available output on the IODEC GAL.  Now I just need
+to figure our where the AY-3-8910 is located!
+
 More thoughts to come...
