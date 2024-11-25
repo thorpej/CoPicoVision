@@ -175,6 +175,7 @@ actually used:
 * BDIR=1 BC1=1 -- latch address
 
 We can achieve this with 2 gates from a 74HCT02 quad-NOR:
+
           A0 --+
                +-- NOR -> BC1
              +-+
@@ -186,6 +187,7 @@ We can achieve this with 2 gates from a 74HCT02 quad-NOR:
          /WR --+
 
 Here's the truth table:
+
     /AYSEL    /WR    A0        BDIR    BC1
        0       0      0          1      1       <- write to $x0 (addr latch)
        0       0      1          1      0       <- write to $x1 (write data)
