@@ -191,4 +191,14 @@ GAL that implements the following logic:
     BC1  = AYSEL * /A1 * /A0 *  WR ; write-$x0
          + AYSEL *  A1 * /A0 * /WR ;  read-$x2
 
+So, what's the part count difference?
+* Replace 6C6264 with 6C62256.
+* Add 74HCT08.
+* Add 74HCT74.
+* Add AY-3-8910.
+* Add GAL22V10 (AYDEC).
+
+...which is 4 additional chips, and one of them is prettt big.  That would
+definitely require me to re-think the CoPicoVision board layout.
+
 More thoughts to come...
