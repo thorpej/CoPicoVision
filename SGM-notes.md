@@ -56,7 +56,8 @@ Thinking about the ROM and the RAM trapped "beneath" it... it seems like
 it would be handy to write to that RAM even when the ROM is enabled.  This
 would enable game code to copy the ROM if desired, or let game code otherwise
 initialize that RAM before disabling the ROM.  This is pretty easy to do; we
-can add the /RD signal as an input to the MEMDEC GAL.
+can add the /WR signal as an input to the MEMDEC GAL.  /WR is chosen because
+it's used similarly in other parts of the system.
 
 So, how do we want to generate the XRAMEN and ROMEN signals?  In the SGM,
 extended RAM is enabled by writing 0b00000001 to port $53.  Because of
@@ -88,19 +89,19 @@ The base CoPicoVision MEMDEC GAL has the following connections:
     CLK M1 /MREQ   /RFSH      A13       A14      A15      NC     NC NC  NC     GND
     NC  NC  M1WAIT /CRTESEL  /CRTCSEL  /CRTASEL /CRT8SEL /RAMSEL NC NC /ROMSEL VCC
 
-We know we need to add /RD, XRAMEN, and ROMEN as inputs.  Unfortunately,
+We know we need to add /WR, XRAMEN, and ROMEN as inputs.  Unfortunately,
 there aren't enough available outputs to use the MEMDEC GAL for A10-A12,
 so we'll have to add a 74HCT08 to the board.
 
 So, with that in mind, here's what the new GAL equations for /ROMSEL and
 /RAMSEL could look like:
 
-    CLK M1 /MREQ   /RFSH      A13       A14      A15     /RD     XRAMEN ROMEN  NC     GND
+    CLK M1 /MREQ   /RFSH      A13       A14      A15     /WR     XRAMEN ROMEN  NC     GND
     NC  NC  M1WAIT /CRTESEL  /CRTCSEL  /CRTASEL /CRT8SEL /RAMSEL NC     NC    /ROMSEL VCC
 
-    ROMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH *  RD *  ROMEN ; ROM reads, ROM enabled
-    RAMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH *  RD * /ROMEN ; ROM reads, ROM disabled
-             + /A15 * /A14 * /A13 * MREQ * /RFSH * /RD          ; ROM writes
+    ROMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH * /WR *  ROMEN ; ROM reads, ROM enabled
+    RAMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH * /WR * /ROMEN ; ROM reads, ROM disabled
+             + /A15 * /A14 * /A13 * MREQ * /RFSH *  WR          ; ROM writes
              + /A15 * /A14 *  A13 * MREQ * /RFSH * XRAMEN       ; XRAM $2000
              + /A15 *  A14 * /A13 * MREQ * /RFSH * XRAMEN       ; XRAM $4000
              + /A15 *  A14 *  A13 * MREQ * /RFSH                ; base RAM
