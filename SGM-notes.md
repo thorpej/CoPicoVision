@@ -184,10 +184,10 @@ GAL that implements the following logic:
     /AYSEL /WR A0 A1 NC NC NC NC NC NC  NC   GND
      NC     NC NC NC NC NC NC NC NC BC1 BDIR VCC
     
-    BDIR = /AYSEL * /A1 * /A0 *  WR ; write-$x0
-         + /AYSEL * /A1 *  A0 *  WR ; write-%x1
+    BDIR = AYSEL * /A1 * /A0 *  WR ; write-$x0
+         + AYSEL * /A1 *  A0 *  WR ; write-%x1
     
-    BC1  = /AYSEL * /A1 * /A0 *  WR ; write-$x0
-         + /AYSEL *  A1 * /A0 * /WR ;  read-$x2
+    BC1  = AYSEL * /A1 * /A0 *  WR ; write-$x0
+         + AYSEL *  A1 * /A0 * /WR ;  read-$x2
 
 More thoughts to come...
