@@ -174,31 +174,36 @@ actually used:
 * BDIR=1 BC1=0 -- write to PSG
 * BDIR=1 BC1=1 -- latch address
 
-We don't have enough outputs left on the IODEC GAL (DRAT, that's what I get
-for trying to cheap out on an extra chip for VDPEN), so I'll add an AYDEC
-GAL that implements the following logic:
-* BDIR <- write-$x0 OR write-$x1
-* BC1  <- write-$x0 OR read-$x2
+We can achieve this with 2 gates from a 74HCT02 quad-NOR:
+          A0 --+
+               +-- NOR -> BC1
+             +-+
+             |
+    /AYSEL --+
+             |
+             +-+
+               +-- NOR -> BDIR
+         /WR --+
 
-...and the GAL equations:
-
-    /AYSEL /WR A0 A1 NC NC NC NC NC NC  NC   GND
-     NC     NC NC NC NC NC NC NC NC BC1 BDIR VCC
-    
-    BDIR = AYSEL * /A1 * /A0 *  WR ; write-$x0
-         + AYSEL * /A1 *  A0 *  WR ; write-%x1
-    
-    BC1  = AYSEL * /A1 * /A0 *  WR ; write-$x0
-         + AYSEL *  A1 * /A0 * /WR ;  read-$x2
+Here's the truth table:
+    /AYSEL    /WR    A0        BDIR    BC1
+       0       0      0          1      1       <- write to $x0 (addr latch)
+       0       0      1          1      0       <- write to $x1 (write data)
+       0       1      0          0      1       <- read from $x2 (read data)
+       0       1      1          0      0
+       1       0      0          0      0
+       1       0      1          0      0
+       1       1      0          0      0
+       1       1      1          0      0
 
 So, what's the part count difference?
 * Replace 6C6264 with 6C62256.
 * Add 74HCT08.
 * Add 74HCT74.
 * Add AY-3-8910.
-* Add GAL22V10 (AYDEC).
+* Add 74HCT02.
 
-...which is 4 additional chips, and one of them is prettt big.  That would
+...which is 4 additional chips, and one of them is pretty big.  That would
 definitely require me to re-think the CoPicoVision board layout.
 
 More thoughts to come...
