@@ -208,4 +208,14 @@ So, what's the part count difference?
 ...which is 4 additional chips, and one of them is pretty big.  That would
 definitely require me to re-think the CoPicoVision board layout.
 
+Now, for mixing the output of the SN and AY sound chips... The original
+ColecoVision has a 1.8K series resistor and 0.1uF cap between the SN and
+the RF modulator, and the EXAUD goes though a 0.1uF cap before being mixed
+in betweem the above resistor and cap.
+
+I'm pretty sure the nominal output voltages are very similar between the
+SN and AY chips.  I think just a 1K series resistor after each chip output
+to sum them before the output buffer will do fine, but I think I will
+breadboard this and experiment with an Arduino or something first.
+
 More thoughts to come...
