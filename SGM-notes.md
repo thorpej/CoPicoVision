@@ -218,4 +218,8 @@ SN and AY chips.  I think just a 1K series resistor after each chip output
 to sum them before the output buffer will do fine, but I think I will
 breadboard this and experiment with an Arduino or something first.
 
+Ok, I've added a simulation of a possible passive mixing circuit for SGM
+audio.  It also eliminates the emitter-follower for the audio outut; it
+turns out to seemingly not be necessary, even on the base CoPicoVision.
+
 More thoughts to come...
