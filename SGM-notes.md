@@ -179,9 +179,7 @@ We can achieve this with 2 gates from a 74HCT02 quad-NOR:
           A0 --+
                +-- NOR -> BC1
              +-+
-             |
     /AYSEL --+
-             |
              +-+
                +-- NOR -> BDIR
          /WR --+
