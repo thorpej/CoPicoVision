@@ -20,6 +20,20 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Dec 15, 2024
+I had to take a break from CoPicoVision for a little while for various
+reasons, but I'm trying to get back to it.  After mulling it over and
+thinking about future "Super CoPicoVision" plans, I decided to change the
+audio output buffer to a TL071 opamp, taking advantage of the -5V rail I
+have at my disposal.  I added an LTspice simulation of the circuit, including
+passively mixing in the output of an AY-3-8910, which would be present on
+this hypothetical "Super CoPicoVision".  I want to get this send off to the
+fab soon and if everthing is fine, call this version "CoPicoVision 1.0".
+
+I do plan to keep working on it, though!  I plan on experimenting with
+the layout, switching to SMT components as necessary, to see if I can fit
+the extra chips needed for the Super flavor within the same board footprint.
+
 ### Update - Nov 10, 2024
 I finally got a chance to get set up with some powered speakers (with a
 volume control) to get a better sense of how the audio section behaves.
