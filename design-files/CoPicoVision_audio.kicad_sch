@@ -1144,7 +1144,7 @@
     (property "Value" "0.1µF" (at 88.392 135.5153 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Capacitor_THT:C_Disc_D3.8mm_W2.6mm_P2.50mm" (at 84.836 133.604 0)
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" (at 84.836 133.604 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 84.836 133.604 0)
