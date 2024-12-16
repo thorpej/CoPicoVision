@@ -1809,7 +1809,7 @@
     (property "Value" "74ACT05" (at 133.223 21.082 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Package_DIP:DIP-14_W7.62mm_Socket" (at 133.223 25.781 0)
+    (property "Footprint" "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" (at 133.223 25.781 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://www.ti.com/lit/ds/symlink/cd74act05.pdf" (at 133.223 25.781 0)
