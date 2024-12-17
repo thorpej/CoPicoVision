@@ -1,8 +1,8 @@
 GAL22V10
 MEMDEC
 
-CLK /RFSH     M1       NC      /MREQ    /WR NC NC A13     A14     A15    GND
-NC  /CRTESEL /CRTCSEL /CRTASEL /CRT8SEL  NC NC NC M1WAIT /RAMSEL /ROMSEL VCC
+CLK /RFSH     M1       NC      /MREQ    /WR XRAMEN ROMEN A13     A14     A15    GND
+NC  /CRTESEL /CRTCSEL /CRTASEL /CRT8SEL  NC NC     NC    M1WAIT /RAMSEL /ROMSEL VCC
 
 ;
 ; This implements memory space decoding and M1 wait-state generation for
