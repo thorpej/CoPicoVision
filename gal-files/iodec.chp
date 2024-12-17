@@ -7,23 +7,23 @@
                           |                 |
                       /WR |  2           23 | /SNWSEL
                           |                 |
-                       A5 |  3           22 | /VDPRSEL
+                       NC |  3           22 | /VDPRSEL
                           |                 |
-                       A6 |  4           21 | /VDPWSEL
+                       A7 |  4           21 | /VDPWSEL
                           |                 |
-                       A7 |  5           20 | /VDPEN
+                       A6 |  5           20 | /VDPEN
                           |                 |
-                       NC |  6           19 | /C2WSEL
+                       A5 |  6           19 | /C2WSEL
                           |                 |
-                       NC |  7           18 | /C1WSEL
+                       A4 |  7           18 | /C1WSEL
                           |                 |
-                       NC |  8           17 | /CRSEL
+                       A3 |  8           17 | /CRSEL
                           |                 |
-                       NC |  9           16 | NC
+                       A2 |  9           16 | NC
                           |                 |
-                       NC | 10           15 | NC
+                       A1 | 10           15 | NC
                           |                 |
-                       NC | 11           14 | NC
+                       A0 | 11           14 | NC
                           |                 |
                       GND | 12           13 | NC
                           -------------------

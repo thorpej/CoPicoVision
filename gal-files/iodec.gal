@@ -1,7 +1,7 @@
 GAL22V10
 IODEC
 
-/IORQ /WR A5 A6  A7     NC      NC      NC     NC       NC       NC     GND
+/IORQ /WR NC A7  A6     A5      A4      A3     A2       A1       A0     GND
  NC    NC NC NC /CRSEL /C1WSEL /C2WSEL /VDPEN /VDPWSEL /VDPRSEL /SNWSEL VCC
 
 ;
