@@ -1,8 +1,8 @@
 GAL22V10
 IODEC
 
-/IORQ /WR NC A7  A6     A5      A4      A3     A2       A1       A0     GND
- NC    NC NC NC /CRSEL /C1WSEL /C2WSEL /VDPEN /VDPWSEL /VDPRSEL /SNWSEL VCC
+/IORQ /WR      NC     A7     A6       A5       A4       A3       A2     A1      A0     GND
+ NC   /SNWSEL /AYSEL /VDPEN /VDPWSEL /VDPRSEL /FF1WSEL /FF2WSEL /CRSEL /C1WSEL /C2WSEL VCC
 
 ;
 ; This implements I/O space address decoding for the CoPicoVision.
