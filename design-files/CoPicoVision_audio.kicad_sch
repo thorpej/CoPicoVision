@@ -1360,7 +1360,7 @@
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
-  (global_label "D7" (shape bidirectional) (at 51.181 101.219 180) (fields_autoplaced)
+  (global_label "D6" (shape bidirectional) (at 51.181 101.219 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 2e36605a-ecca-46f7-8509-b86ae60daeb5)
     (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 44.6844 101.219 0)
