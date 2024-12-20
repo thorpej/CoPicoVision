@@ -20,6 +20,18 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Dec 19, 2024
+Well, I had some time to kill on a plane, so I started the process to
+claw back board real estate in order to fit the additional components
+needed for "Super CoPicoVision".  But of course, once the initial shrink
+was done, I needed to know where the additional components would fit before
+I re-routed the board.  This of course meant that I needed to actually
+add these additional components to the board, meaning that I needed to do
+the work to add them to the schematic.  Anyway, you can probably guess
+where this is going!  I need to now fix up the BOM (when you're ordering
+ICs in surface-mount packages, you need to be a little more specific about
+which part number you order!)
+
 ### Update - Dec 15, 2024
 I had to take a break from CoPicoVision for a little while for various
 reasons, but I'm trying to get back to it.  After mulling it over and
@@ -108,9 +120,11 @@ to Troy.
 So, yah, it's early!  Watch this space!
 
 ## Design philosophy
-My goal is to play ColecoVision games, not to produce a faithful clone of the
-circuit.  It needs to be fully-compatible with ColecoVision games, but that's
-the extent of it.  As such, some shortcuts are going to be taken.
+My initial goal was to play ColecoVision games (and subsequently, also
+games that require the Super Game Module), not to produce a faithful
+clone of the circuit.  It needs to be fully-compatible with ColecoVision
+and SGM games, but that's the extent of it.  As such, some shortcuts are
+going to be taken.
 
 First of all, I'm using Troy Schrapel's excellent pico9918 engine for the video
 display.  This reduces the number of vintage parts that need to be sourced, and
@@ -131,12 +145,17 @@ glue logic rather than general-purpuse 7400-series parts.  Atmel still makes
 a compatible part, and there are open source tools for programming them, so the
 design is still very accessible.
 
-There are two "vintage" parts that are required for the CoPicoVision:
+There are three "vintage" parts that are required for the CoPicoVision:
 * A 4MHz-capable Z80 CPU in a DIP-40 package.
 * A TI SN76489AN sound chip.
+* A General Instrument AY-3-8910 sound chip (a Yamaha YM2149 will probably
+  also work, but I don't have any to try).  This is only needed if you want
+  to be able to play SGM games; regular ColecoVision games will work without
+  it.
 
-Eventually, I'd like to replace the SN76489AN with an emulated part, (almost
-certainly using a Pi Pico), but for now the real thing needs to be sourced.
+Eventually, I'd like to replace the SN76489AN and AY-3-8910s with emulated
+parts, (almost certainly using a Pi Pico), but for now the real thing needs
+to be sourced.
 
 Obviously, with the Z80 now being EOL'd, that poses a bit of a snag.  Luckily,
 I have a stash of modern CMOS Z80s, and this design will also accept a vintage
@@ -148,12 +167,16 @@ version of the CoPicoVision.  But for now, a genuine Z80 must be used.
 ## Design details
 I spent some time mulling over how I wanted to approach this board.  I
 considered doing an all-SMT board (except for the stuff that was only
-available as through-hole), but I ultimately decided against it in order
-to try and keep a more retro look.  I did, however, go with mostly all
-SMT parts in the power supply since at least one of the parts I wanted to
-use there was only available in SMT.  Ultimately, this proved necessary
-in order to be able to squeeze everything onto the board (I wanted to have
-at least a little clear board space for some silk screen markings).
+available as through-hole), but for the first version of the bgoard I
+ultimately went with mostly through-hole parts (except for the power supply)
+in order to try and keep a more retro look.
+
+This wasn't feasible for version 2, the "Super CoPicoVision"; I wanted to
+keep the same basic envelope, so I had no choice to shrink the components
+in order to make space for the additional logic chips and the large DIP-40
+AY-3-8910.  So, I converted all of the individual resistors and ceramic
+capacitors to 0805 packages, and the RAM and most logic ICs to SOIC packages
+(I left the 74LS541s in the controller input section as DIP packages).
 
 The board is 4 layers: signals (and ground fill) top and bottom, along with
 an internal ground plane and power plane.  I arrived at the size of the board
@@ -173,9 +196,7 @@ the rest of the board, so it's safe to update the firmware in situ.
 
 I've included a bill of materials with Mouser part numbers for just about
 everything; the jellybean SMT resistors / capacitors (in standard 0805 case)
-and the jellybean carbon film THT resistors (BoM indicates the footprint
-constraints) are left as an exercise for the reader.  Same goes for chip
-sockets.
+are left as an exercise for the reader.  Same goes for chip sockets.
 
 ### Power supply
 The power supply is fairly simple, since we don't need the -12V rail that's
@@ -211,10 +232,11 @@ using GALs for this purpose, I save the extra logic chips.
 The ColecoVision also uses a 74LS74 along with some additional logic gates
 to add a wait-state when the Z80 performs an opcode fetch.  It does this
 presumably to give some extra breathing room to slow ROMs (of the Z80 machine
-cycles, M1 has the tightest timing).  There is plenty of left-over space in
-the decoder GALs, so I put it in the MEMDEC GAL (since it's about the opcode
-fetch from memory).  There is a large comment in the MEMDEC GAL source file
-that explains how the wait-state generator works.
+cycles, M1 has the tightest timing).  There is plenty of space in the MEMDEC
+GAL for this, so that's where I put it (since it's all about the opcode fetch
+from memory).  There is a large comment in the
+[MEMDEC GAL](gal-files/memdec.gal) source file that explains how the
+wait-state generator works.
 
 The BIOS ROM for the CoPicoVision is contained in a 150ns 28C64 EEPROM.
 I chose this part because:
@@ -222,13 +244,83 @@ I chose this part because:
 * They're totally fast enough.
 * They're still being made and you can buy them new from Mouser and DigiKey.
 
-The CoPicoVision's RAM is an AS6C6264-55PCN, which is an 8KB 55ns SRAM
-chip, only 1KB of which is used.
+The CoPicoVision's RAM is an AS6C62256-55SCN, which is a 32KB 55ns SRAM chip.
+
+The ColecoVision's address space is divided into 8 8KB "pages":
+
+* $0000 - BIOS ROM
+* $2000 - Expansion
+* $4000 - Expansion
+* $6000 - RAM
+* $8000 - Cartridge selector 0
+* $A000 - Cartridge selector 1
+* $C000 - Cartridge selector 2
+* $E000 - Cartridge selector 3
+
+The ColecoVision only has 1KB of RAM at $6000, and the addresses are
+incompletely decoded, so that 1KB is mirrored throughout that page.
+
+The Super Game Module has 32KB of extended RAM, only 24KB of which is
+available unless the BIOS ROM is diabled.  These features are controlled
+by the following two registers:
+
+* Writing 0b00000001 to port $53 enables extended RAM.
+* Writing 0b00001101 to port $7F disables the BIOS ROM (0b00001111
+  re-enables it).  Games must write one of these two values in order
+  to maintain compatability with the Adam.
+
+The CoPicoVision uses a 74HCT74 dual D-type flip-flop is used to provide
+these two control registers (only 2 independently-settable bits are needed).
+FF1 is connected to D0 and provides the XRAMEN signal, and FF2 is connected
+to D1 and provides the ROMEN signal.  The /RESET line is connected such that
+FF0 is cleared at reset and FF1 is set at reset.  These two signals are used
+by the [MEMDEC GAL](gal-files/memdec.gal) when decoding memory addresses.
+A 74HCT08 quad-AND chip mixes the XRAM signal with RAM address lines A10-A12,
+forcing them to 0 when XRAMEN is disabled and passing them through from the
+CPU when XRAMEN is enabled, thus maintaining the RAM mirroring behavior of
+the original ColecoVision.
+
+When the ROM is enabled, MEMDEC sends reads from the $0000 page to
+the ROM, and when disabled it sends those reads to the RAM.  Writes to
+the $0000 page are always sent to RAM.  On the CoPicoVision, the $0000 page
+RAM behavior is governed entirely by the ROMEN signal.  I suspect this
+doesn't exactly match the original Super Game Module behavior, but I also
+suspect that it doesn't matter in any practical sense.
+
+I/O address decoding is handled by the [IODEC GAL](gal-files/iodec.gal).
+In the original ColecoVision, I/O addresses were incompletely decoded using
+address lines A5-A7:
+
+* $8x writes set controller keypad scan mode
+* $Ax reads read from the VDP registers
+* $Ax writes write to the VDP registers
+* $Cx writes set controller NESW scan mode
+* $Ex reads read the controllers
+* $Ex writes write to the SN76489AN sound chip
+
+To support the SGM extensions, the IODEC GAL also needs to completely
+decode the following addresses:
+
+* $50 (AY-3-8910 address latch)
+* $51 (AY-3-8910 write data)
+* $52 (AY-3-8910 read data)
+* $53 writes (extended memory enable register)
+* $7F writes (ROM disable register)
+
+Alas, all of the outputs of the IODEC GAL are consumed with the above
+requirements (on the CoPicoVision, there is a third VDPEN output signal
+that is used to enable the bus transcievers that perform the 5V <-> 3V3
+level shifting between the Z80 and the Pi Pico in addition to the standard
+read/write selectors), so a pair of NOR gates from a 74HCT02 are used in
+conjunction with the /AYSEL output from IODEC, the A0 address line, and the
+Z80's /WR signal to generate the BC1 and BDIR signals used to interface with
+the AY-3-8910.
 
 ### Audio
-The audio section is identical to the original ColecoVision, except the
-output is buffered by an emitter-follower and then AC-coupled to both
-outputs of a 3.5mm TRS phone jack.
+The audio section is comprised of the two sound chips, whose outputs are
+passively mixed using 1K series resistors and then AC-coupled to a TL071
+op-amp which serves as an output buffer.  The op-amp's output is then
+AC-coupled to both outputs of a 3.5mm TRS phone jack.
 
 ### Video
 Of course, the video circuit is built using a Raspberry Pi Pico running a
