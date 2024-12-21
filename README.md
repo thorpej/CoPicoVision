@@ -291,10 +291,10 @@ I/O address decoding is handled by the [IODEC GAL](gal-files/iodec.gal).
 In the original ColecoVision, I/O addresses were incompletely decoded using
 address lines A5-A7:
 
-* $8x writes set controller keypad scan mode
+* $8x writes set controller number pad scan mode
 * $Ax reads read from the VDP registers
 * $Ax writes write to the VDP registers
-* $Cx writes set controller NESW scan mode
+* $Cx writes set controller joystick scan mode
 * $Ex reads read the controllers
 * $Ex writes write to the SN76489AN sound chip
 

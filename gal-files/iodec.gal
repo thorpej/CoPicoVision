@@ -7,13 +7,22 @@ IODEC
 ;
 ; This implements I/O space address decoding for the CoPicoVision.
 ;
-; The ColecoVision has the following I/O space address map:
+; The original ColecoVision has the following I/O space address map:
 ;
-; $80 (w)   - Enable controller scan mode 2 (number pad)
-; $A0 (r/w) - VDP
-; $C0 (w)   - Enable controller scan mode 1 (joystick)
-; $E0 (r)   - Controller read
-; $E0 (w)   - SN76489AN sound chip
+; $8x (w)   - Enable controller scan mode 2 (number pad)
+; $Ax (r/w) - VDP
+; $Cx (w)   - Enable controller scan mode 1 (joystick)
+; $Ex (r)   - Controller read
+; $Ex (w)   - SN76489AN sound chip
+;
+; The Super Game Module adds:
+;
+; $50 (w)   - AY-3-8910 address latch
+; $51 (w)   - AY-3-8910 data writes
+; $52 (r)   - AY-3-8910 data reads
+;
+; $53 (w)   - extended RAM enable (0b00000001) / disable (0b00000000) [default]
+; $7F (w)   - BIOS ROM disable (0b00001101) / enable (0b00001111) [default]
 ;
 C2WSEL  = A7 * /A6 * /A5 * IORQ *  WR		; $80 writes
 VDPRSEL = A7 * /A6 *  A5 * IORQ * /WR		; $A0 reads
@@ -22,6 +31,14 @@ VDPEN   = A7 * /A6 *  A5 * IORQ			; enable VDP transceiver
 C1WSEL  = A7 *  A6 * /A5 * IORQ *  WR		; $C0 writes
 CRSEL   = A7 *  A6 *  A5 * IORQ * /WR		; $E0 reads
 SNWSEL  = A7 *  A6 *  A5 * IORQ *  WR		; $E0 writes
+
+; Reads vs. writes are handled externally by a pair of NOR gates.
+AYSEL   = /A7 * A6 * /A5 * A4 * /A3 * /A2 * /A1 * /A0 * IORQ ; $50
+        + /A7 * A6 * /A5 * A4 * /A3 * /A2 * /A1 *  A0 * IORQ ; $51
+        + /A7 * A6 * /A5 * A4 * /A3 * /A2 *  A1 * /A0 * IORQ ; $52
+
+FF1WSEL = /A7 * A6 * /A5 * A4 * /A3 * /A2 *  A1 *  A0 * IORQ * WR ; $53 (w)
+FF2WSEL = /A7 * A6 *  A5 * A4 *  A3 *  A2 *  A1 *  A0 * IORQ * WR ; $7F (w)
 
 DESCRIPTION
 

@@ -11,9 +11,9 @@
                           |                 |
                        A7 |  4           21 | /CRSEL
                           |                 |
-                       A6 |  5           20 | /FF2WSEL
+                       A6 |  5           20 | /FF1WSEL
                           |                 |
-                       A5 |  6           19 | /FF1WSEL
+                       A5 |  6           19 | /FF2WSEL
                           |                 |
                        A4 |  7           18 | /VDPRSEL
                           |                 |
