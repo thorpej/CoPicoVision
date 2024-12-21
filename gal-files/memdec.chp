@@ -5,25 +5,25 @@
                           -------\___/-------
                       CLK |  1           24 | VCC
                           |                 |
-                       M1 |  2           23 | /ROMSEL
+                    /RFSH |  2           23 | /ROMSEL
                           |                 |
-                    /MREQ |  3           22 | NC
+                       M1 |  3           22 | /RAMSEL
                           |                 |
-                    /RFSH |  4           21 | NC
+                       NC |  4           21 | M1WAIT
                           |                 |
-                      A13 |  5           20 | /RAMSEL
+                    /MREQ |  5           20 | NC
                           |                 |
-                      A14 |  6           19 | /CRT8SEL
+                      /WR |  6           19 | NC
                           |                 |
-                      A15 |  7           18 | /CRTASEL
+                   XRAMEN |  7           18 | NC
                           |                 |
-                       NC |  8           17 | /CRTCSEL
+                    ROMEN |  8           17 | /CRT8SEL
                           |                 |
-                       NC |  9           16 | /CRTESEL
+                      A13 |  9           16 | /CRTASEL
                           |                 |
-                       NC | 10           15 | M1WAIT
+                      A14 | 10           15 | /CRTCSEL
                           |                 |
-                       NC | 11           14 | NC
+                      A15 | 11           14 | /CRTESEL
                           |                 |
                       GND | 12           13 | NC
                           -------------------
