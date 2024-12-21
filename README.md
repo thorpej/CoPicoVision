@@ -167,7 +167,7 @@ version of the CoPicoVision.  But for now, a genuine Z80 must be used.
 ## Design details
 I spent some time mulling over how I wanted to approach this board.  I
 considered doing an all-SMT board (except for the stuff that was only
-available as through-hole), but for the first version of the bgoard I
+available as through-hole), but for the first version of the board I
 ultimately went with mostly through-hole parts (except for the power supply)
 in order to try and keep a more retro look.
 
@@ -201,7 +201,8 @@ are left as an exercise for the reader.  Same goes for chip sockets.
 ### Power supply
 The power supply is fairly simple, since we don't need the -12V rail that's
 found on the original ColecoVision.  We do, however, require a -5V rail, which
-is used as a bias voltage in the controller interface circuit.
+is used as a bias voltage in the controller interface circuit as well as for
+the op-amp used as an output buffer in the audio circuit.
 
 Power comes in via a USB-C connector (with ESD protection diodes on the
 control channel signals).  Power is switched using a MAX16054 on/off
@@ -213,11 +214,11 @@ The -5V rail is generated using an ICL7660A charge pump chip.
 
 ### Clock and reset generation
 The clock circuit on the CoPicoVision is as simple as it gets: it's simply
-a 3.579545 MHz DIP-8 oscillator can that drives the whole thing.  The only
-devices that need the CPUCLK signal are the Z80, the M1 wait-state generator,
-and the SN76489AN sound chip, and those are all directly driven from the
-oscillator.  The Pi Pico that generates the video has its own clock, so none
-of the complicated clock circuitry from the original ColecoVision is necessary.
+a 3.579545 MHz DIP-8 oscillator can that drives the whole thing.  The CPUCLK
+signal is sent directly from the oscillator to the Z80, the M1 wait-state
+generator, and the SN76489AN and AY-3-8190 sound chips.  The Pi Pico that
+generates the video has its own clock, so none of the complicated clock
+circuitry from the original ColecoVision is necessary.
 
 The reset circuit is also very simple.  It's based on the DS1813 reset
 generator IC, which also de-bounces the reset button.  There is a small RC
@@ -225,28 +226,27 @@ network that makes the power-on-reset slightly longer than a manual reset.
 
 ### Address decoding and memory
 Address decoding is performed using 2 GAL22V10 programmable logic devices.
-The ColecoVision uses 2 74LS138s for address decoding, but also requires
-some extra logic to invert some of the signals used by the decoders.  By
-using GALs for this purpose, I save the extra logic chips.
+The original ColecoVision uses 2 74LS138s for address decoding, but also
+requires some extra logic to invert some of the signals used by the decoders.
+By using GALs for this purpose, I save the extra logic chips.
 
-The ColecoVision also uses a 74LS74 along with some additional logic gates
-to add a wait-state when the Z80 performs an opcode fetch.  It does this
-presumably to give some extra breathing room to slow ROMs (of the Z80 machine
-cycles, M1 has the tightest timing).  There is plenty of space in the MEMDEC
-GAL for this, so that's where I put it (since it's all about the opcode fetch
-from memory).  There is a large comment in the
-[MEMDEC GAL](gal-files/memdec.gal) source file that explains how the
-wait-state generator works.
+The ColecoVision also uses a 74LS74 dual D-type flip-flop along with some
+additional logic gates to add a wait-state when the Z80 performs an opcode
+fetch.  It does this presumably to give some extra breathing room to slow
+ROMs (of the Z80 machine cycles, M1 has the tightest timing).  There is
+plenty of space in the MEMDEC GAL for this, so that's where I put it.
+There is a large comment in the [MEMDEC GAL](gal-files/memdec.gal) source
+file that explains how the wait-state generator works.
 
 The BIOS ROM for the CoPicoVision is contained in a 150ns 28C64 EEPROM.
 I chose this part because:
-* I have a bunch of them on-hand.
+* I had a bunch of them on-hand.
 * They're totally fast enough.
 * They're still being made and you can buy them new from Mouser and DigiKey.
 
 The CoPicoVision's RAM is an AS6C62256-55SCN, which is a 32KB 55ns SRAM chip.
 
-The ColecoVision's address space is divided into 8 8KB "pages":
+The ColecoVision's memory address space is divided into 8 8KB "pages":
 
 * $0000 - BIOS ROM
 * $2000 - Expansion
@@ -274,11 +274,11 @@ these two control registers (only 2 independently-settable bits are needed).
 FF1 is connected to D0 and provides the XRAMEN signal, and FF2 is connected
 to D1 and provides the ROMEN signal.  The /RESET line is connected such that
 FF0 is cleared at reset and FF1 is set at reset.  These two signals are used
-by the [MEMDEC GAL](gal-files/memdec.gal) when decoding memory addresses.
-A 74HCT08 quad-AND chip mixes the XRAM signal with RAM address lines A10-A12,
-forcing them to 0 when XRAMEN is disabled and passing them through from the
-CPU when XRAMEN is enabled, thus maintaining the RAM mirroring behavior of
-the original ColecoVision.
+by the MEMDEC GAL when decoding memory addresses.  A 74HCT08 quad-AND chip
+mixes the XRAM signal with RAM address lines A10-A12, forcing them to 0 when
+XRAMEN is disabled and passing them through from the CPU when XRAMEN is
+enabled, thus maintaining the RAM mirroring behavior of the original
+ColecoVision.
 
 When the ROM is enabled, MEMDEC sends reads from the $0000 page to
 the ROM, and when disabled it sends those reads to the RAM.  Writes to
@@ -307,14 +307,9 @@ decode the following addresses:
 * $53 writes (extended memory enable register)
 * $7F writes (ROM disable register)
 
-Alas, all of the outputs of the IODEC GAL are consumed with the above
-requirements (on the CoPicoVision, there is a third VDPEN output signal
-that is used to enable the bus transcievers that perform the 5V <-> 3V3
-level shifting between the Z80 and the Pi Pico in addition to the standard
-read/write selectors), so a pair of NOR gates from a 74HCT02 are used in
-conjunction with the /AYSEL output from IODEC, the A0 address line, and the
-Z80's /WR signal to generate the BC1 and BDIR signals used to interface with
-the AY-3-8910.
+A pair of NOR gates from a 74HCT02 are used in conjunction with the /AYSEL
+output from IODEC, the A0 address line, and the Z80's /WR signal to generate
+the BC1 and BDIR signals used to interface with the AY-3-8910.
 
 ### Audio
 The audio section is comprised of the two sound chips, whose outputs are
@@ -334,12 +329,13 @@ TTL-level open-drain inverter to pull down the Z80's /NMI signal.
 The bus interface to the Pico is a little simpler than that used on the
 pico9918.  Two 74LVC245 bus transceivers are used to perform the 3V3 <--> 5V
 level shift.  This works perfectly fine since I've arranged for everything
-on the 5V side to use TTL logic levels.  One transceiver is hard-wired for
-the B->A direction and level-shifts the A0, /VDPWSEL, /VDPRSEL, and /RESET
-input signals.  The other transceiver level-shifts the data bus and takes
-care of swizzling the bit order between the VDP and the Z80.  The IODEC GAL
-generates an extra signal that's used to enable the output of the data bus
-transceiver, and the direction of the transceiver is controlled by /VDPWSEL.
+on the 5V side to use TTL logic levels, which can accept the 3V3 CMOS logic
+level outputs.  One transceiver is hard-wired for the B->A direction and
+level-shifts the A0, /VDPWSEL, /VDPRSEL, and /RESET input signals to the Pico.
+The other transceiver level-shifts the data bus and takes care of swizzling
+the bit order between the VDP and the Z80.  The IODEC GAL generates an extra
+signal that's used to enable the output of the data bus transceiver, and the
+direction of the transceiver is controlled by /VDPWSEL.
 
 The VGA resistor DAC is identical to the pico9918's.
 
