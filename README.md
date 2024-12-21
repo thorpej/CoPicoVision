@@ -382,6 +382,15 @@ section or tested with 2 controllers.
 
 ## Changes
 
+### Rev 2.0
+This is the first revision of the Super CoPicoVision!
+
+* Change all of the individual resistors and capacitors to 0805 SMT packages.
+* Change most of the logic ICs and the RAM to SOIC SMT packages.
+* Add Super Game Module functionality.
+* Fix a silly mistake in the rev 0.1 power supply; put the reservoid cap
+  on VCC rather than VBUS.
+
 ### Rev 0.2
 * Fixed the swapped controller port issue in rev 0.1.
 * Reworked the output buffer of the audio circuit to use a TL071 op-amp.
