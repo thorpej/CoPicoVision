@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "7.0.2-0"
     },
-    "CreationDate": "2024-09-02T09:38:27-07:00"
+    "CreationDate": "2024-12-21T14:04:37-08:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "CoPicoVision",
       "GUID": "436f5069-636f-4566-9973-696f6e2e6b69",
-      "Revision": "0.1"
+      "Revision": "2.0"
     },
     "Size": {
       "X": 165.962,
