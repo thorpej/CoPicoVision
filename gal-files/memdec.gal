@@ -13,20 +13,27 @@ NC  /CRTESEL /CRTCSEL /CRTASEL /CRT8SEL  NC NC     NC    M1WAIT /RAMSEL /ROMSEL 
 ; The ColecoVision has the following memory space address map:
 ;
 ; $0000 - BIOS ROM
-; $2000 - Expansion connector (not used)
-; $4000 - Expansion connector (not used)
+; $2000 - Expansion
+; $4000 - Expansion
 ; $6000 - RAM
 ; $8000 - Cartridge selector 0
 ; $A000 - Cartridge selector 1
 ; $C000 - Cartridge selector 2
 ; $E000 - Cartridge selector 3
 ;
+; The Super Game Module adds extended RAM and the ability to disable the
+; BIOS ROM.  These are controlled by the XRAMEN and ROMEN inputs.
+;
 ; If the CPU is performing a DRAM refresh, no addresses are decoded.
 ; 
-ROMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH
-;EXP2SEL = /A15 * /A14 *  A13 * MREQ * /RFSH
-;EXP4SEL = /A15 *  A14 * /A13 * MREQ * /RFSH
-RAMSEL   = /A15 *  A14 *  A13 * MREQ * /RFSH
+ROMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH * /WR *  ROMEN ; ROM (en) reads
+
+RAMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH * /WR * /ROMEN ; ROM (dis) reads
+         + /A15 * /A14 * /A13 * MREQ * /RFSH *  WR          ; ROM writes
+         + /A15 * /A14 *  A13 * MREQ * /RFSH * XRAMEN       ; XRAM $2000
+         + /A15 *  A14 * /A13 * MREQ * /RFSH * XRAMEN       ; XRAM $4000
+         + /A15 *  A14 *  A13 * MREQ * /RFSH                ; base RAM $6000
+
 CRT8SEL  =  A15 * /A14 * /A13 * MREQ * /RFSH
 CRTASEL  =  A15 * /A14 *  A13 * MREQ * /RFSH
 CRTCSEL  =  A15 *  A14 * /A13 * MREQ * /RFSH
