@@ -20,6 +20,12 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Dec 21, 2024
+Ok, I think I'm going to tag a 2.0 pre-release and get the boards off to
+fabrication.  I don't really anticipate making any more board changes in
+the short term -- just hanges to ancillary documents.  So stay tuned for
+that!
+
 ### Update - Dec 19, 2024
 Well, I had some time to kill on a plane, so I started the process to
 claw back board real estate in order to fit the additional components
