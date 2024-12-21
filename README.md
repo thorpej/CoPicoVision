@@ -290,14 +290,7 @@ section or tested with 2 controllers.
 
 ### Rev 0.2
 * Fixed the swapped controller port issue in rev 0.1.
-* Changed the footprint of R501 to be vertical to make it easier to
-  fit the needed 1/2 watt resistor.
-* Added a 1.5K current-limiting resistor (R502) between the SN76489AN
-  (U501) and the base of the emitter-follower (Q501).
-* Added a 0.01uF capacitor (C504) between the base of the emitter-follower
-  (Q501) and ground.  This, in conjunction with the 1.5K current-limiting
-  resistor (R502), forms a passive low-pass filter with a cut-off frequency
-  of ~10KHz.
+* Reworked the output buffer of the audio circuit to use a TL071 op-amp.
 * Rerouted some digital signals further away from the audio output path.
 * Moved the cartridge connector towards the rear of the board by 1mm.
 
