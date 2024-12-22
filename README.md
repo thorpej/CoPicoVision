@@ -279,11 +279,11 @@ by the following two registers:
   re-enables it).  Games must write one of these two values in order
   to maintain compatability with the Adam.
 
-The CoPicoVision uses a 74HCT74 dual D-type flip-flop is used to provide
-these two control registers (only 2 independently-settable bits are needed).
-FF1 is connected to D0 and provides the XRAMEN signal, and FF2 is connected
-to D1 and provides the ROMEN signal.  The /RESET line is connected such that
-FF0 is cleared at reset and FF1 is set at reset.  These two signals are used
+The CoPicoVision uses a 74HCT74 dual D-type flip-flop to provide these two
+control registers (only 2 independently-settable bits are needed).  FF1 is
+connected to D0 and provides the XRAMEN signal, and FF2 is connected to D1
+and provides the ROMEN signal.  The /RESET line is connected such that FF0
+is cleared at reset and FF1 is set at reset.  These two signals are used
 by the MEMDEC GAL when decoding memory addresses.  A 74HCT08 quad-AND chip
 mixes the XRAM signal with RAM address lines A10-A12, forcing them to 0 when
 XRAMEN is disabled and passing them through from the CPU when XRAMEN is
@@ -381,8 +381,6 @@ of the cartridge may bump into the back of Q402.  You may need to bend Q402
 forward a little in order to get the cartridge to seat properly.  I plan to
 adjust this in the next board revision, but it may require rerouting several
 signals.
-* More bugs may yet be discovered; I have not yet put together the audio
-section or tested with 2 controllers.
 
 ## Changes
 ### Rev 2.0.1
