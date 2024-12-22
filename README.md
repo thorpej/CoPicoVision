@@ -201,8 +201,12 @@ update the pico9918 firmware.  There's a diode in between the Pico and
 the rest of the board, so it's safe to update the firmware in situ.
 
 I've included a bill of materials with Mouser part numbers for just about
-everything; the jellybean SMT resistors / capacitors (in standard 0805 case)
-are left as an exercise for the reader.  Same goes for chip sockets.
+everything, including the jellybean SMT resistors / capacitors in standard
+0805 packages; these jellybean parts can be substituted with equivalent stock
+you might have on hand, of course, but I included Mouser part numbers for
+convenience.  For the DIP chip sockets, you whatever kind you prefer.  For
+the push button switches, there are lots of garden-variety 6mm through-hole
+momentary push buttons out there, so you whatever you prefer.
 
 ### Power supply
 The power supply is fairly simple, since we don't need the -12V rail that's
@@ -381,6 +385,10 @@ signals.
 section or tested with 2 controllers.
 
 ## Changes
+### Rev 2.0.1
+
+This contains corrections / additions to the Bill of Materials.  There are
+no circuit or board changes in this revision.
 
 ### Rev 2.0
 This is the first revision of the Super CoPicoVision!
