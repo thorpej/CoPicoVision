@@ -20,6 +20,16 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Dec 29, 2024
+I've realized that I made a major error in the clock frequency for the
+AY-3-8910, and this is going to require me to spin the board.  Basically,
+I used the CPUCLK as the input to the AY-3-8910, when it actually needs
+to be divided by 2.  I can do that by adding a D-FF.  I'll make an
+interposer board for rev 2.0 systems that sits between the AY-3-8910
+and the main board that carries the FF chip.  If that works out OK,
+I'll just probably put that down on the main board in rev 3.0, rather
+than overhauling the whole clock circuit.
+
 ### Update - Dec 21, 2024
 Ok, I think I'm going to tag a 2.0 pre-release and get the boards off to
 fabrication.  I don't really anticipate making any more board changes in
