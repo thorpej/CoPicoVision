@@ -390,6 +390,19 @@ analog magic going on, so I decided not to push my luck.  I don't have any
 of the quadrature controllers to test with at this time.
 
 ## Errata
+Rev 2.0 of the CoPicoVision has the following bugs:
+* The memory address decoder keys off the wrong signal when detecting
+reads vs. writes to the 8K page where the BIOS ROM is located.  This can
+lead to unreliable behavior when the BIOS ROM is disabled.  This issue only
+affects Super Game Module games that disable the BIOS ROM.  A re-work
+procedure is being developed for the issue.
+* The AY-3-8910 sound chip has the wrong clock source.  This will lead to
+incorrect sound output of any Super Game Module game that uses the
+AY-3-8910 sound chip (which is nearly all of them).  This issue will be
+addressed by the addition of an interposer board that sits between the
+AY-3-8910 and the CoPicoVision.  This interposer board will contain
+additional components to provide a correct clock input to the AY-3-8910.
+
 Rev 0.1 of the CoPicoVision has the following bugs:
 * Controller 1 and Controller 2 are swapped due to a silly mistake in
 the selection logic.  [This procedure](errata/rev0_1_controller_bodge.md)
@@ -403,6 +416,12 @@ adjust this in the next board revision, but it may require rerouting several
 signals.
 
 ## Changes
+### Rev 2.1
+
+This corrects an issue with the memory address decoder that affects
+Super Game Module games that disable the BIOS ROM in order to access
+RAM the lower 8KB of the address space.
+
 ### Rev 2.0.1
 
 This contains corrections / additions to the Bill of Materials.  There are
@@ -414,7 +433,7 @@ This is the first revision of the Super CoPicoVision!
 * Change all of the individual resistors and capacitors to 0805 SMT packages.
 * Change most of the logic ICs and the RAM to SOIC SMT packages.
 * Add Super Game Module functionality.
-* Fix a silly mistake in the rev 0.1 power supply; put the reservoid cap
+* Fix a silly mistake in the rev 0.1 power supply; put the reservoir cap
   on VCC rather than VBUS.
 
 ### Rev 0.2

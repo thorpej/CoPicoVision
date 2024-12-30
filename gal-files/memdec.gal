@@ -1,7 +1,7 @@
 GAL22V10
 MEMDEC
 
-CLK /RFSH     M1       NC      /MREQ    /WR XRAMEN ROMEN A13     A14     A15    GND
+CLK /RFSH     M1       NC      /MREQ    /RD XRAMEN ROMEN A13     A14     A15    GND
 NC  /CRTESEL /CRTCSEL /CRTASEL /CRT8SEL  NC NC     NC    M1WAIT /RAMSEL /ROMSEL VCC
 
 ;
@@ -26,10 +26,10 @@ NC  /CRTESEL /CRTCSEL /CRTASEL /CRT8SEL  NC NC     NC    M1WAIT /RAMSEL /ROMSEL 
 ;
 ; If the CPU is performing a DRAM refresh, no addresses are decoded.
 ; 
-ROMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH * /WR *  ROMEN ; ROM (en) reads
+ROMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH *  RD *  ROMEN ; ROM (en) reads
 
-RAMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH * /WR * /ROMEN ; ROM (dis) reads
-         + /A15 * /A14 * /A13 * MREQ * /RFSH *  WR          ; ROM writes
+RAMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH *  RD * /ROMEN ; ROM (dis) reads
+         + /A15 * /A14 * /A13 * MREQ * /RFSH * /RD          ; ROM writes
          + /A15 * /A14 *  A13 * MREQ * /RFSH * XRAMEN       ; XRAM $2000
          + /A15 *  A14 * /A13 * MREQ * /RFSH * XRAMEN       ; XRAM $4000
          + /A15 *  A14 *  A13 * MREQ * /RFSH                ; base RAM $6000

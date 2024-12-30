@@ -13,7 +13,7 @@
                           |                 |
                     /MREQ |  5           20 | NC
                           |                 |
-                      /WR |  6           19 | NC
+                      /RD |  6           19 | NC
                           |                 |
                    XRAMEN |  7           18 | NC
                           |                 |
