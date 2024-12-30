@@ -20,6 +20,16 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Dec 30, 2024
+Aaaaand I've realized I made another error, this time in the SGM extended
+memory support.  Specifically, when disabling the BIOS ROM.  I foolishly
+used /WR as an input signal to the decoder, completely forgetting the
+fact that the Z80 memory cycle timings are very different from the I/O
+cycle timings.  To fix this, I'm going to need to change the MEMDEC GAL
+inputs and equations (it should take /RD as an input rather than /WR).
+I will post a re-work for the rev 2.0 boards (it will involve cutting a
+trace and running a short bodge wire between the Z80 and the MEMDEC GAL).
+
 ### Update - Dec 29, 2024
 I've realized that I made a major error in the clock frequency for the
 AY-3-8910, and this is going to require me to spin the board.  Basically,
