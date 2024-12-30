@@ -394,8 +394,8 @@ Rev 2.0 of the CoPicoVision has the following bugs:
 * The memory address decoder keys off the wrong signal when detecting
 reads vs. writes to the 8K page where the BIOS ROM is located.  This can
 lead to unreliable behavior when the BIOS ROM is disabled.  This issue only
-affects Super Game Module games that disable the BIOS ROM.  A re-work
-procedure is being developed for the issue.
+affects Super Game Module games that disable the BIOS ROM.
+[This procedure](errata/rev2_0_memdec_bodge.md) will correct the problem.
 * The AY-3-8910 sound chip has the wrong clock source.  This will lead to
 incorrect sound output of any Super Game Module game that uses the
 AY-3-8910 sound chip (which is nearly all of them).  This issue will be
