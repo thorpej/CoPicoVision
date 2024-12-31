@@ -396,12 +396,16 @@ reads vs. writes to the 8K page where the BIOS ROM is located.  This can
 lead to unreliable behavior when the BIOS ROM is disabled.  This issue only
 affects Super Game Module games that disable the BIOS ROM.
 [This procedure](errata/rev2_0_memdec_bodge.md) will correct the problem.
+The issue is corrected in rev 2.1 of the CoPicoVision board.
 * The AY-3-8910 sound chip has the wrong clock source.  This will lead to
 incorrect sound output of any Super Game Module game that uses the
-AY-3-8910 sound chip (which is nearly all of them).  This issue will be
-addressed by the addition of an interposer board that sits between the
-AY-3-8910 and the CoPicoVision.  This interposer board will contain
-additional components to provide a correct clock input to the AY-3-8910.
+AY-3-8910 sound chip (which is nearly all of them).  For rev 2.x boards, this
+issue is fixed using an interposer board for the AY-3-8910 that also contains
+a 74HCT74 D-type flip-flip, which is used to divide the input clock to the
+correct frequency.  [This procedure](errata/rev2_x_ay_interposer.md) describes
+the procedure for building and installing the interposer board.  This issue
+will be corrected in rev 3.0 of the CoPicoVision board, which will have a
+completely re-worked clock circuit.
 
 Rev 0.1 of the CoPicoVision has the following bugs:
 * Controller 1 and Controller 2 are swapped due to a silly mistake in
