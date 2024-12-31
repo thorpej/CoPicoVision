@@ -2695,7 +2695,7 @@
     </comp>
     <comp lib="0" loc="(100,1210)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="label" val="WR"/>
+      <a name="label" val="nRD"/>
     </comp>
     <comp lib="0" loc="(100,1270)" name="Tunnel">
       <a name="facing" val="east"/>
@@ -2787,7 +2787,7 @@
     </comp>
     <comp lib="0" loc="(100,700)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="label" val="nWR"/>
+      <a name="label" val="RD"/>
     </comp>
     <comp lib="0" loc="(100,730)" name="Tunnel">
       <a name="facing" val="east"/>
@@ -2815,7 +2815,7 @@
     </comp>
     <comp lib="0" loc="(100,970)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="label" val="nWR"/>
+      <a name="label" val="RD"/>
     </comp>
     <comp lib="0" loc="(110,140)" name="Pin">
       <a name="appearance" val="classic"/>
@@ -2855,10 +2855,10 @@
     </comp>
     <comp lib="0" loc="(110,80)" name="Pin">
       <a name="appearance" val="classic"/>
-      <a name="label" val="WRb"/>
+      <a name="label" val="RDb"/>
     </comp>
     <comp lib="0" loc="(180,110)" name="Tunnel">
-      <a name="label" val="nWR"/>
+      <a name="label" val="nRD"/>
     </comp>
     <comp lib="0" loc="(180,140)" name="Tunnel">
       <a name="label" val="RFSH"/>
@@ -2903,7 +2903,7 @@
       <a name="label" val="A15"/>
     </comp>
     <comp lib="0" loc="(180,80)" name="Tunnel">
-      <a name="label" val="WR"/>
+      <a name="label" val="RD"/>
     </comp>
     <comp lib="0" loc="(360,640)" name="Tunnel">
       <a name="label" val="ROMSEL"/>
