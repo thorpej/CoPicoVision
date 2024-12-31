@@ -48,7 +48,7 @@ the bottom side of the board.
 Remove the AY-3-8910 (U503) from its socket on the CoPicoVision and install
 it into the socket on the interposer board.
 
-### Step 6
+## Step 6
 
 Install the interposer board into the AY-3-8910 (U503) socket on the
 CoPicoVision.
