@@ -20,6 +20,12 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Dec 31, 2024
+Ok, I am tagging rev 2.1 that contains the MEMDEC fix and has a rework
+procedure involving an interposer board for the AY-3-8910 clock issue.
+I don't plan to actually spin any of these boards myself, but it's a
+checkpoint (and I am spinning a run on interposers).
+
 ### Update - Dec 30, 2024
 Aaaaand I've realized I made another error, this time in the SGM extended
 memory support.  Specifically, when disabling the BIOS ROM.  I foolishly
