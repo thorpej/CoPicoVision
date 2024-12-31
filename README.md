@@ -422,9 +422,11 @@ signals.
 ## Changes
 ### Rev 2.1
 
-This corrects an issue with the memory address decoder that affects
-Super Game Module games that disable the BIOS ROM in order to access
-RAM the lower 8KB of the address space.
+* Corrects an issue with the memory address decoder that affects Super
+Game Module games that disable the BIOS ROM in order to access RAM the
+lower 8KB of the address space.
+* Adds a rework procedure using an interposer board for fixing an issue
+where the incorrect clock frequency is used with the AY-3-8910.
 
 ### Rev 2.0.1
 
