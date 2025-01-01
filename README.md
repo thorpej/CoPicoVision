@@ -24,7 +24,9 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 Ok, I am tagging rev 2.1 that contains the MEMDEC fix and has a rework
 procedure involving an interposer board for the AY-3-8910 clock issue.
 I don't plan to actually spin any of these boards myself, but it's a
-checkpoint (and I am spinning a run on interposers).
+checkpoint (and I am spinning a run of interposers).
+
+Happy New Year, everyone!
 
 ### Update - Dec 30, 2024
 Aaaaand I've realized I made another error, this time in the SGM extended
