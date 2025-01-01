@@ -6,8 +6,8 @@
 
   (title_block
     (title "CoPicoVision")
-    (date "2024-12-30")
-    (rev "2.1")
+    (date "2024-12-31")
+    (rev "3.0")
     (company "(c) 2024 Jason R. Thorpe.  See LICENSE.")
   )
 
@@ -1472,10 +1472,10 @@
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
-  (global_label "CPUCLK" (shape input) (at 51.181 126.619 180) (fields_autoplaced)
+  (global_label "AYCLK" (shape input) (at 51.181 126.619 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid e028d50d-8adb-446d-bcda-0f2d36b5f4f5)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 40.8366 126.619 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 42.5299 126.619 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )

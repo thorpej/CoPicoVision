@@ -251,16 +251,24 @@ pushbutton.
 The -5V rail is generated using an ICL7660A charge pump chip.
 
 ### Clock and reset generation
-The clock circuit on the CoPicoVision is as simple as it gets: it's simply
-a 3.579545 MHz DIP-8 oscillator can that drives the whole thing.  The CPUCLK
-signal is sent directly from the oscillator to the Z80, the M1 wait-state
-generator, and the SN76489AN and AY-3-8190 sound chips.  The Pi Pico that
-generates the video has its own clock, so none of the complicated clock
-circuitry from the original ColecoVision is necessary.
+On the first revision of the CoPicoVision, the clock circuit was as simple
+as it gets: a simply a 3.579545 MHz DIP-8 oscillator can that drove the
+whole thing, providing CPUCLK signal to the Z80, the M1 wait-state generator,
+and the SN76489AN sound chip.
 
-The reset circuit is also very simple.  It's based on the DS1813 reset
-generator IC, which also de-bounces the reset button.  There is a small RC
-network that makes the power-on-reset slightly longer than a manual reset.
+When the Super Game Module enhancements were added in rev 2.0, this clock
+was also provided to the AY-3-8190 sound chip, which was actually a mistake
+on my part, and it required an annoying work-around to divide CPUCLK by 2
+for the AY-3-8190.
+
+So, in rev 3.0, the clock circuit was completely overhauled to use a
+14.31818 MHz oscillator to generate the base clock, which is fed into a
+74HCT161 binary counter that is used to divide the base frequency by 4
+(CPUCLK - 3.579545 MHz) and 8 (AYCLK - 1.789773 MHz).
+
+The reset circuit is based on the DS1813 reset generator IC, which also
+de-bounces the reset button.  There is a small RC network that makes the
+power-on-reset slightly longer than a manual reset.
 
 ### Address decoding and memory
 Address decoding is performed using 2 GAL22V10 programmable logic devices.
@@ -428,6 +436,15 @@ adjust this in the next board revision, but it may require rerouting several
 signals.
 
 ## Changes
+### Rev 3.0
+
+* Overhauled the clock circuit to properly provide the two different
+clock frequencies required (3.579545 MHz for CPUCLK, which is also used
+by the basic ColecoVision sound chip, and 1.789773 MHz for AYCLK, used
+by the AY-3-8910 SGM sound chip).  This is achieved by using a
+14.31818 MHz oscillator which feeds a 74HCT161 binary counter that
+divides the input frequency by 4 and 8.
+
 ### Rev 2.1
 
 * Corrects an issue with the memory address decoder that affects Super
