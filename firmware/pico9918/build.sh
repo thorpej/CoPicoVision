@@ -13,8 +13,8 @@ mkdir ${FIRMWARE_DIR}/build
 cd ${FIRMWARE_DIR}/build || exit 1
 cmake -DPICO9918_CONFIG="${PICO9918_CONFIG}" ${PICO9918_DIR} || exit 1
 cmake --build . || exit 1
-mv ${FIRMWARE_DIR}/build/src/pico9918.uf2 \
-    ${FIRMWARE_DIR}/CoPicoVision_pico9918.uf2 || exit 1
+mv ${FIRMWARE_DIR}/build/src/pico9918-CoPicoVision-vga-build-*.uf2 \
+    ${FIRMWARE_DIR}/ || exit 1
 cd ${FIRMWARE_DIR} || exit 1
 rm -rf ${FIRMWARE_DIR}/build || exit 1
 

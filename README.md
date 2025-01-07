@@ -20,6 +20,10 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Jan 7, 2025
+I've done some work to update to the latest version of pico9918, and
+submitted a PR for my build parameterization changes.
+
 ### Update - Dec 31, 2024
 Ok, I am tagging rev 2.1 that contains the MEMDEC fix and has a rework
 procedure involving an interposer board for the AY-3-8910 clock issue.
