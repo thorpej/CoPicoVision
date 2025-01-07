@@ -1,3 +1,4 @@
 [submodule "submodules/pico9918"]
 	path = submodules/pico9918
 	url = git@github.com:thorpej/pico9918.git
+	branch = upstream-issue-28
