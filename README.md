@@ -448,6 +448,7 @@ by the basic ColecoVision sound chip, and 1.789773 MHz for AYCLK, used
 by the AY-3-8910 SGM sound chip).  This is achieved by using a
 14.31818 MHz oscillator which feeds a 74HCT161 binary counter that
 divides the input frequency by 4 and 8.
+* Changed U102 from TO-92-3 package to an SOT-23 surface-mount package.
 
 ### Rev 2.1
 
