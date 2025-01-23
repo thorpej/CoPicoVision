@@ -449,6 +449,8 @@ by the AY-3-8910 SGM sound chip).  This is achieved by using a
 14.31818 MHz oscillator which feeds a 74HCT161 binary counter that
 divides the input frequency by 4 and 8.
 * Changed U102 from TO-92-3 package to an SOT-23 surface-mount package.
+* Changed Q401 and Q402 from TO-92-3 packages to SOT-523 surface-mount
+packages.
 
 ### Rev 2.1
 
