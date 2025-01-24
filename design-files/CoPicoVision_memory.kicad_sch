@@ -6,9 +6,9 @@
 
   (title_block
     (title "CoPicoVision")
-    (date "2024-12-31")
+    (date "2025-01-23")
     (rev "3.0")
-    (company "(c) 2024 Jason R. Thorpe.  See LICENSE.")
+    (company "(c) 2024, 2025 Jason R. Thorpe.  See LICENSE.")
   )
 
   (lib_symbols
