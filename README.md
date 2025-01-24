@@ -20,6 +20,24 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Jan 23, 2025
+I received the rev 2.0 boards a little while ago, and the other night started
+building one up, only to realize I forgot to oder some parts.  Oh well,
+no big deal... I have some travel planned for the next few days, and when
+I get back, the parts will be here.  I'm continuing to make tweaks to the
+rev 3.0 board, replacing through-hole components with surface-mount
+equivalents; it's really amazing how much faster it is to build up a
+board with surface-mount bits.  The rev 2.0 CoPicoVision is by far my
+most ambitious SMT project to date, and rev 3.0 will be even MOAR.
+
+I've settled on rev 3.0 being the final "classic" CoPicoVision (barring
+bugs, obviously), but I am already thinking about a rev 4.0 that will
+eliminate the out-of-production audio chips in favor of a second Pi Pico
+that will emulate both the SN76489AN and the AY-3-8910.  I'm going to
+spend a lot of time breadboarding that before I make the leap, but it's
+my goal to eliminate those hard to source parts.  Only the Z80A will remain,
+and it's still somewhat available (for now, at least).
+
 ### Update - Jan 7, 2025
 I've done some work to update to the latest version of pico9918, and
 submitted a PR for my build parameterization changes.
