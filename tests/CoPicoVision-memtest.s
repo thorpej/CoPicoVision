@@ -129,8 +129,7 @@ main:
 	ld	HL, .test_fail_str
 	ld	BC, .test_fail_str_len
 	call	VDP_copyin_continue
-.generic_test_fail_spin:
-	jp	.generic_test_fail_spin
+	ret
 
 ;
 ; Test 1 -- Ensure that in the default memory map, base RAM is mirrored
@@ -202,52 +201,49 @@ test1_e1_fail:
 	ld	HL, .test1_e1_fail_str
 	ld	BC, .test1_e1_fail_str_len
 	call	VDP_copyin_continue
-	jp	test1_fail
+	ret
 
 test1_e2_fail:
 	call	test1_fail_preamble
 	ld	HL, .test1_e2_fail_str
 	ld	BC, .test1_e2_fail_str_len
 	call	VDP_copyin_continue
-	jp	test1_fail
+	ret
 
 test1_e3_fail:
 	call	test1_fail_preamble
 	ld	HL, .test1_e3_fail_str
 	ld	BC, .test1_e3_fail_str_len
 	call	VDP_copyin_continue
-	jp	test1_fail
+	ret
 
 test1_e4_fail:
 	call	test1_fail_preamble
 	ld	HL, .test1_e4_fail_str
 	ld	BC, .test1_e4_fail_str_len
 	call	VDP_copyin_continue
-	jp	test1_fail
+	ret
 
 test1_e5_fail:
 	call	test1_fail_preamble
 	ld	HL, .test1_e5_fail_str
 	ld	BC, .test1_e5_fail_str_len
 	call	VDP_copyin_continue
-	jp	test1_fail
+	ret
 
 test1_e6_fail:
 	call	test1_fail_preamble
 	ld	HL, .test1_e6_fail_str
 	ld	BC, .test1_e6_fail_str_len
 	call	VDP_copyin_continue
-	jp	test1_fail
+	ret
 
 test1_e7_fail:
 	call	test1_fail_preamble
 	ld	HL, .test1_e7_fail_str
 	ld	BC, .test1_e7_fail_str_len
 	call	VDP_copyin_continue
-	; FALLTHROUGH
-
-test1_fail:
-	jr	test1_fail
+	ret
 
 test1_fail_preamble:
 	ld	HL, .test1_fail_preamble_str
@@ -403,16 +399,13 @@ test3_p1_fail:
 	ld	HL, .test3_p1_fail_str
 	ld	BC, .test3_p1_fail_str_len
 	call	VDP_copyin_continue
-	jr	test3_fail
+	ret
 
 test3_p2_fail:
 	ld	HL, .test3_p2_fail_str
 	ld	BC, .test3_p2_fail_str_len
 	call	VDP_copyin_continue
-	; FALLTHROUGH
-
-test3_fail:
-	jr	test3_fail
+	ret
 
 .test3_preamble_str:
 	defm	"Test 3 extended RAM disabled check "
