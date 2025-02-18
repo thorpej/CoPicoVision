@@ -58,8 +58,9 @@ ram_base_e5:	equ	0x7400
 ram_base_e6:	equ	0x7800
 ram_base_e7:	equ	0x7c00	; last echo
 
-ram_ext:	equ	0x2000	; 16KB
-bios:		equ	0x0000	; 8KB
+page_size:	equ	0x2000
+ram_ext:	equ	0x2000	; 2 pages
+bios:		equ	0x0000	; 1 page
 
 stack_top:	equ	ram_base+0x400
 
@@ -87,6 +88,13 @@ main:
 	call	VDP_copyin_continue
 
 	call	test1
+	call	test2
+
+	ld	C, 23		; Row 23
+	call	VDP_setrow
+	ld	HL, .tests_complete_str
+	ld	BC, .tests_complete_str_len
+	call	VDP_copyin_continue
 
 .spin:	jp	.spin
 
@@ -94,6 +102,34 @@ main:
 	defm	"CoPicoVision Memory Map Test Utility"
 .title_str_end:
 .title_str_len:	equ	.title_str_end - .title_str
+
+.tests_complete_str:
+	defm	"All tests complete."
+.tests_complete_str_end:
+.tests_complete_str_len:	equ .tests_complete_str_end - .tests_complete_str
+
+.test_pass_str:
+	defm	"--pass--"
+.test_pass_str_end:
+.test_pass_str_len:	equ	.test_pass_str_end - .test_pass_str
+
+.test_fail_str:
+	defm	"--fail--"
+.test_fail_str_end:
+.test_fail_str_len:	equ	.test_fail_str_end - .test_fail_str
+
+.generic_test_pass:
+	ld	HL, .test_pass_str
+	ld	BC, .test_pass_str_len
+	call	VDP_copyin_continue
+	ret
+
+.generic_test_fail:
+	ld	HL, .test_fail_str
+	ld	BC, .test_fail_str_len
+	call	VDP_copyin_continue
+.generic_test_fail_spin:
+	jp	.generic_test_fail_spin
 
 ;
 ; Test 1 -- Ensure that in the default memory map, base RAM is mirrored
@@ -156,7 +192,7 @@ test1:
 	ret
 
 .test1_pass_str:
-	defm	"Test 1 base RAM mirror check --pass--."
+	defm	"Test 1 base RAM mirror check --pass--"
 .test1_pass_str_end:
 .test1_pass_str_len:	equ	.test1_pass_str_end - .test1_pass_str
 
@@ -264,9 +300,56 @@ test1_fail_preamble:
 ; expected to land in the "hidden" RAM, and we will test for that
 ; later.
 ;
+; Uses screen row 3.
+;
+; Put the test pattern near the end of the BIOS page.
+;
+test2_dest:	equ	bios+page_size-64
 test2:
-	ret
+	ld	C, 3			; Row 3
+	call	VDP_setrow
 
+	ld	HL, .test2_preamble_str
+	ld	BC, .test2_preamble_str_len
+	call	VDP_copyin_continue
+
+	;
+	; The CoPicoVision's memory address decoder is designed to
+	; pass writes through to RAM even if the BIOS ROM is still
+	; enabled.  This will be confirmed in a subsequent test.
+	; First, however, we must copy the entire BIOS ROM into the
+	; RAM below so that things continue to work when we disable
+	; it later.
+	;
+	ld	HL, bios		; HL <- BIOS ROM
+	ld	DE, bios		; DE <- destination (BIOS page)
+	ld	BC, page_size		; BC <- length
+	ldir				; Copy it
+
+	ld	HL, .test2_testpat	; HL <- test pattern
+	ld	DE, test2_dest		; DE <- destination
+	ld	BC, .test2_testpat_len	; BC <- length
+	push	HL			; preserve the arguments
+	push	DE
+	push	BC
+	ldir				; Copy it
+	pop	BC			; restore the arguments
+	pop	DE
+	pop	HL
+
+	call	memcmp			; Now, compare.
+	jp	Z, .generic_test_fail	; Match -> FAIL - ROM is enabled!
+	jp	.generic_test_pass
+
+.test2_preamble_str:
+	defm	"Test 2 BIOS ROM read-only check "
+.test2_preamble_str_end:
+.test2_preamble_str_len:	equ .test2_preamble_str_end - .test2_preamble_str
+
+.test2_testpat:
+	defm	"The quick brown fox jumps over the lazy dog."
+.test2_testpat_end:
+.test2_testpat_len:		equ	.test2_testpat_end - .test2_testpat
 
 rst:
 	ret
@@ -303,42 +386,6 @@ memset:
 	ld	A, C
 	or	B			; mix all length bits together
 	jr	NZ, .memset_loop	; Loop if not 0
-
-	pop	HL
-	pop	DE
-	pop	BC
-	pop	AF
-	ret
-
-;
-; memcpy(3)
-;
-; Arguments:
-;	DE	Source buffer
-;	HL	Destination buffer
-;	BC	Byte count
-;
-; Returns:
-;	None.
-;
-; Clobbers:
-;	None.
-;
-memcpy:
-	push	AF			; save AF
-	push	BC			; save BC
-	push	DE			; save DE
-	push	HL			; save HL
-
-.memcpy_loop:
-	ld	A, (DE)
-	inc	DE
-	ld	(HL), A
-	inc	HL
-	dec	BC
-	ld	A, C
-	or	B			; mix all length bits together
-	jr	NZ, .memcpy_loop	; Loop if not 0
 
 	pop	HL
 	pop	DE
