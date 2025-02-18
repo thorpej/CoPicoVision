@@ -86,12 +86,177 @@ main:
 	ld	BC, .title_str_len
 	call	VDP_copyin_continue
 
+	call	test1
+
 .spin:	jp	.spin
 
 .title_str:
 	defm	"CoPicoVision Memory Map Test Utility"
 .title_str_end:
 .title_str_len:	equ	.title_str_end - .title_str
+
+;
+; Test 1 -- Ensure that in the default memory map, base RAM is mirrored
+; every 1K in its 8K page.
+;
+; Uses screen row 2.
+;
+test1:
+	ld	C, 2			; Row 2
+	call	VDP_setrow
+
+	ld	HL, ram_base		; HL <- RAM base
+	ld	(HL), 0			; Put 0 in the first byte of RAM.
+
+	ld	IX, ram_base_e1		; IX <- RAM base, first mirror
+	ld	(IX+0), 1		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	1
+	jp	NZ, test1_e1_fail
+
+	ld	IX, ram_base_e2		; IX <- RAM base, second mirror
+	ld	(IX+0), 2		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	2
+	jp	NZ, test1_e2_fail
+
+	ld	IX, ram_base_e3		; IX <- RAM base, third mirror
+	ld	(IX+0), 3		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	3
+	jp	NZ, test1_e3_fail
+
+	ld	IX, ram_base_e4		; IX <- RAM base, fourth mirror
+	ld	(IX+0), 4		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	4
+	jp	NZ, test1_e4_fail
+
+	ld	IX, ram_base_e5		; IX <- RAM base, fifth mirror
+	ld	(IX+0), 5		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	5
+	jp	NZ, test1_e5_fail
+
+	ld	IX, ram_base_e6		; IX <- RAM base, sixth mirror
+	ld	(IX+0), 6		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	6
+	jp	NZ, test1_e6_fail
+
+	ld	IX, ram_base_e7		; IX <- RAM base, seventh mirror
+	ld	(IX+0), 7		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	7
+	jp	NZ, test1_e7_fail
+
+	ld	HL, .test1_pass_str
+	ld	BC, .test1_pass_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test1_pass_str:
+	defm	"Test 1 base RAM mirror check --pass--."
+.test1_pass_str_end:
+.test1_pass_str_len:	equ	.test1_pass_str_end - .test1_pass_str
+
+test1_e1_fail:
+	call	test1_fail_preamble
+	ld	HL, .test1_e1_fail_str
+	ld	BC, .test1_e1_fail_str_len
+	call	VDP_copyin_continue
+	jp	test1_fail
+
+test1_e2_fail:
+	call	test1_fail_preamble
+	ld	HL, .test1_e2_fail_str
+	ld	BC, .test1_e2_fail_str_len
+	call	VDP_copyin_continue
+	jp	test1_fail
+
+test1_e3_fail:
+	call	test1_fail_preamble
+	ld	HL, .test1_e3_fail_str
+	ld	BC, .test1_e3_fail_str_len
+	call	VDP_copyin_continue
+	jp	test1_fail
+
+test1_e4_fail:
+	call	test1_fail_preamble
+	ld	HL, .test1_e4_fail_str
+	ld	BC, .test1_e4_fail_str_len
+	call	VDP_copyin_continue
+	jp	test1_fail
+
+test1_e5_fail:
+	call	test1_fail_preamble
+	ld	HL, .test1_e5_fail_str
+	ld	BC, .test1_e5_fail_str_len
+	call	VDP_copyin_continue
+	jp	test1_fail
+
+test1_e6_fail:
+	call	test1_fail_preamble
+	ld	HL, .test1_e6_fail_str
+	ld	BC, .test1_e6_fail_str_len
+	call	VDP_copyin_continue
+	jp	test1_fail
+
+test1_e7_fail:
+	call	test1_fail_preamble
+	ld	HL, .test1_e7_fail_str
+	ld	BC, .test1_e7_fail_str_len
+	call	VDP_copyin_continue
+	jp	test1_fail
+
+test1_fail:
+	jp	test1_fail
+
+test1_fail_preamble:
+	ld	HL, .test1_fail_preamble_str
+	ld	BC, .test1_fail_preamble_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test1_e1_fail_str:
+	defm	"0x6400"
+.test1_e1_fail_str_end:
+.test1_e1_fail_str_len:		equ	.test1_e1_fail_str_end - .test1_e1_fail_str
+
+.test1_e2_fail_str:
+	defm	"0x6800"
+.test1_e2_fail_str_end:
+.test1_e2_fail_str_len:		equ	.test1_e2_fail_str_end - .test1_e2_fail_str
+
+.test1_e3_fail_str:
+	defm	"0x6c00"
+.test1_e3_fail_str_end:
+.test1_e3_fail_str_len:		equ	.test1_e3_fail_str_end - .test1_e3_fail_str
+
+.test1_e4_fail_str:
+	defm	"0x7000"
+.test1_e4_fail_str_end:
+.test1_e4_fail_str_len:		equ	.test1_e4_fail_str_end - .test1_e4_fail_str
+
+.test1_e5_fail_str:
+	defm	"0x7400"
+.test1_e5_fail_str_end:
+.test1_e5_fail_str_len:		equ	.test1_e5_fail_str_end - .test1_e5_fail_str
+
+.test1_e6_fail_str:
+	defm	"0x7800"
+.test1_e6_fail_str_end:
+.test1_e6_fail_str_len:		equ	.test1_e6_fail_str_end - .test1_e6_fail_str
+
+.test1_e7_fail_str:
+	defm	"0x7c00"
+.test1_e7_fail_str_end:
+.test1_e7_fail_str_len:		equ	.test1_e7_fail_str_end - .test1_e7_fail_str
+
+.test1_fail_preamble_str:
+	defm	"Test 1 RAM --failed-- to mirror at "
+.test1_fail_preamble_str_end:
+.test1_fail_preamble_str_len:	equ	.test1_fail_preamble_str_end - .test1_fail_preamble_str
 
 rst:
 	ret
