@@ -258,12 +258,130 @@ test1_fail_preamble:
 .test1_fail_preamble_str_end:
 .test1_fail_preamble_str_len:	equ	.test1_fail_preamble_str_end - .test1_fail_preamble_str
 
+;
+; test2 -- Ensure that the ROM area is read-only in the default
+; config.  The pattern that we write into the ROM area is, however,
+; expected to land in the "hidden" RAM, and we will test for that
+; later.
+;
+test2:
+	ret
+
+
 rst:
 	ret
 
 irq:
 	ei
 	reti
+
+;
+; memset(3)
+;
+; Arguments:
+;	A	The value to set
+;	HL	Destination
+;	BC	Byte count
+;
+; Returns:
+;	None.
+;
+; Clobbers:
+;	None.
+;
+memset:
+	push	AF			; save AF
+	push	BC			; save BC
+	push	DE			; save DE
+	push	HL			; save HL
+
+	ld	D, A			; get value into D
+.memset_loop:
+	ld	(HL), D
+	inc	HL
+	dec	BC
+	ld	A, C
+	or	B			; mix all length bits together
+	jr	NZ, .memset_loop	; Loop if not 0
+
+	pop	HL
+	pop	DE
+	pop	BC
+	pop	AF
+	ret
+
+;
+; memcpy(3)
+;
+; Arguments:
+;	DE	Source buffer
+;	HL	Destination buffer
+;	BC	Byte count
+;
+; Returns:
+;	None.
+;
+; Clobbers:
+;	None.
+;
+memcpy:
+	push	AF			; save AF
+	push	BC			; save BC
+	push	DE			; save DE
+	push	HL			; save HL
+
+.memcpy_loop:
+	ld	A, (DE)
+	inc	DE
+	ld	(HL), A
+	inc	HL
+	dec	BC
+	ld	A, C
+	or	B			; mix all length bits together
+	jr	NZ, .memcpy_loop	; Loop if not 0
+
+	pop	HL
+	pop	DE
+	pop	BC
+	pop	AF
+	ret
+
+;
+; memcmp(3)
+;
+; Arguments:
+;	DE	One of the buffers
+;	HL	The other of the buffers
+;	BC	Byte count
+;
+; Returns:
+;	Z flag set if entire buffer is equal, not set if .. not.
+;	A contains the difference: *DE - *HL
+;
+; Clobbers:
+;	AF
+;
+memcmp:
+	push	BC			; save BC
+	push	DE			; save DE
+	push	HL			; save HL
+
+.memcmp_loop:
+	ld	A, (DE)
+	sub	(HL)
+	jr	NZ, .memcmp_done
+	inc	DE
+	inc	HL
+	dec	BC
+	ld	A, C
+	or	B			; mix all length bits together
+	jr	NZ, .memcmp_loop
+
+.memcmp_done:
+	pop	HL
+	pop	DE
+	pop	BC
+	ret
 
 ;
 ; VDP_init:
