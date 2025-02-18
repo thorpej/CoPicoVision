@@ -89,6 +89,7 @@ main:
 
 	call	test1
 	call	test2
+	call	test3
 
 	ld	C, 23		; Row 23
 	call	VDP_setrow
@@ -243,10 +244,10 @@ test1_e7_fail:
 	ld	HL, .test1_e7_fail_str
 	ld	BC, .test1_e7_fail_str_len
 	call	VDP_copyin_continue
-	jp	test1_fail
+	; FALLTHROUGH
 
 test1_fail:
-	jp	test1_fail
+	jr	test1_fail
 
 test1_fail_preamble:
 	ld	HL, .test1_fail_preamble_str
@@ -351,6 +352,83 @@ test2:
 .test2_testpat_end:
 .test2_testpat_len:		equ	.test2_testpat_end - .test2_testpat
 
+;
+; test3 -- Ensure that extended RAM is disabled by writing a test pattern
+; and verify that it does not stick.
+;
+; Uses screen row 4.
+;
+test3:
+	ld	C, 4			; Row 4
+	call	VDP_setrow
+
+	ld	HL, .test3_preamble_str
+	ld	BC, .test3_preamble_str_len
+	call	VDP_copyin_continue
+
+	;
+	; Write a different pattern to each page of extended RAM.
+	;
+	ld	A, 0xaa			; A <- test pattern
+	ld	HL, ram_ext		; HL <- destination
+	ld	BC, page_size		; BC <- byte count
+	call	memset
+
+	ld	A, 0x55			; A <- test pattern
+	ld	HL, ram_ext+page_size	; HL <- destination
+	ld	BC, page_size		; BC <- byte count
+	call	memset
+
+	;
+	; Check the first page.
+	;
+	ld	A, 0xaa
+	ld	HL, ram_ext
+	ld	BC, page_size
+	call	membytecmp
+	jr	Z, test3_p1_fail	; match -> FAIL
+
+	;
+	; Check the second page.
+	;
+	ld	A, 0x55
+	ld	HL, ram_ext+page_size
+	ld	BC, page_size
+	call	membytecmp
+	jr	Z, test3_p2_fail	; match -> FAIL
+
+	jp	.generic_test_pass
+
+test3_p1_fail:
+	ld	HL, .test3_p1_fail_str
+	ld	BC, .test3_p1_fail_str_len
+	call	VDP_copyin_continue
+	jr	test3_fail
+
+test3_p2_fail:
+	ld	HL, .test3_p2_fail_str
+	ld	BC, .test3_p2_fail_str_len
+	call	VDP_copyin_continue
+	; FALLTHROUGH
+
+test3_fail:
+	jr	test3_fail
+
+.test3_preamble_str:
+	defm	"Test 3 extended RAM disabled check "
+.test3_preamble_str_end:
+.test3_preamble_str_len:	equ	.test3_preamble_str_end - .test3_preamble_str
+
+.test3_p1_fail_str:
+	defm	"--failed-- at 0x2000"
+.test3_p1_fail_str_end:
+.test3_p1_fail_str_len:		equ	.test3_p1_fail_str_end - .test3_p1_fail_str
+
+.test3_p2_fail_str:
+	defm	"--failed-- at 0x4000"
+.test3_p2_fail_str_end:
+.test3_p2_fail_str_len:		equ	.test3_p2_fail_str_end - .test3_p2_fail_str
+
 rst:
 	ret
 
@@ -425,6 +503,45 @@ memcmp:
 	jr	NZ, .memcmp_loop
 
 .memcmp_done:
+	pop	HL
+	pop	DE
+	pop	BC
+	ret
+
+;
+; membytecmp:
+;	Like memcmp(3), but we're only comparing against a single byte
+;	value.
+;
+; Arguments:
+;	A	Comparison byte
+;	HL	Buffer to check
+;	BC	Byte count
+;
+; Returns:
+;	Z flag set if entire buffer is equal, not set if .. not.
+;	A contains the difference: *HL - <byte>
+;
+; Clobbers:
+;	AF
+;
+membytecmp:
+	push	BC			; save BC
+	push	DE			; save DE
+	push	HL			; save HL
+
+	ld	D, A			; value into D
+.membytecmp_loop:
+	ld	A, (HL)
+	sub	D
+	jr	NZ, .membytecmp_done
+	inc	HL
+	dec	BC
+	ld	A, C
+	or	B			; mix all length bits together
+	jr	NZ, .membytecmp_loop
+
+.membytecmp_done:
 	pop	HL
 	pop	DE
 	pop	BC
