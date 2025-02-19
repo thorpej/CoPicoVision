@@ -141,6 +141,10 @@ test1:
 	ld	C, 2			; Row 2
 	call	VDP_setrow
 
+	ld	HL, .test1_preamble_str
+	ld	BC, .test1_preamble_str_len
+	call	VDP_copyin_continue
+
 	ld	HL, ram_base		; HL <- RAM base
 	ld	(HL), 0			; Put 0 in the first byte of RAM.
 
@@ -186,110 +190,89 @@ test1:
 	cp	7
 	jp	NZ, test1_e7_fail
 
-	ld	HL, .test1_pass_str
-	ld	BC, .test1_pass_str_len
-	call	VDP_copyin_continue
-	ret
+	jp	.generic_test_pass
 
-.test1_pass_str:
-	defm	"Test 1 base RAM mirror check --pass--"
-.test1_pass_str_end:
-.test1_pass_str_len:	equ	.test1_pass_str_end - .test1_pass_str
+.test1_preamble_str:
+	defm	"Test 1 base RAM mirror check "
+.test1_preamble_str_end:
+.test1_preamble_str_len:	equ .test1_preamble_str_end - .test1_preamble_str
 
 test1_e1_fail:
-	call	test1_fail_preamble
 	ld	HL, .test1_e1_fail_str
 	ld	BC, .test1_e1_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
 test1_e2_fail:
-	call	test1_fail_preamble
 	ld	HL, .test1_e2_fail_str
 	ld	BC, .test1_e2_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
 test1_e3_fail:
-	call	test1_fail_preamble
 	ld	HL, .test1_e3_fail_str
 	ld	BC, .test1_e3_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
 test1_e4_fail:
-	call	test1_fail_preamble
 	ld	HL, .test1_e4_fail_str
 	ld	BC, .test1_e4_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
 test1_e5_fail:
-	call	test1_fail_preamble
 	ld	HL, .test1_e5_fail_str
 	ld	BC, .test1_e5_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
 test1_e6_fail:
-	call	test1_fail_preamble
 	ld	HL, .test1_e6_fail_str
 	ld	BC, .test1_e6_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
 test1_e7_fail:
-	call	test1_fail_preamble
 	ld	HL, .test1_e7_fail_str
 	ld	BC, .test1_e7_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
-test1_fail_preamble:
-	ld	HL, .test1_fail_preamble_str
-	ld	BC, .test1_fail_preamble_str_len
-	call	VDP_copyin_continue
-	ret
-
 .test1_e1_fail_str:
-	defm	"0x6400"
+	defm	"--failed-- at 0x6400"
 .test1_e1_fail_str_end:
 .test1_e1_fail_str_len:		equ	.test1_e1_fail_str_end - .test1_e1_fail_str
 
 .test1_e2_fail_str:
-	defm	"0x6800"
+	defm	"--failed-- at 0x6800"
 .test1_e2_fail_str_end:
 .test1_e2_fail_str_len:		equ	.test1_e2_fail_str_end - .test1_e2_fail_str
 
 .test1_e3_fail_str:
-	defm	"0x6c00"
+	defm	"--failed-- at 0x6c00"
 .test1_e3_fail_str_end:
 .test1_e3_fail_str_len:		equ	.test1_e3_fail_str_end - .test1_e3_fail_str
 
 .test1_e4_fail_str:
-	defm	"0x7000"
+	defm	"--failed-- at 0x7000"
 .test1_e4_fail_str_end:
 .test1_e4_fail_str_len:		equ	.test1_e4_fail_str_end - .test1_e4_fail_str
 
 .test1_e5_fail_str:
-	defm	"0x7400"
+	defm	"--failed-- at 0x7400"
 .test1_e5_fail_str_end:
 .test1_e5_fail_str_len:		equ	.test1_e5_fail_str_end - .test1_e5_fail_str
 
 .test1_e6_fail_str:
-	defm	"0x7800"
+	defm	"--failed-- at 0x7800"
 .test1_e6_fail_str_end:
 .test1_e6_fail_str_len:		equ	.test1_e6_fail_str_end - .test1_e6_fail_str
 
 .test1_e7_fail_str:
-	defm	"0x7c00"
+	defm	"--failed-- at 0x7c00"
 .test1_e7_fail_str_end:
 .test1_e7_fail_str_len:		equ	.test1_e7_fail_str_end - .test1_e7_fail_str
-
-.test1_fail_preamble_str:
-	defm	"Test 1 RAM --failed-- to mirror at "
-.test1_fail_preamble_str_end:
-.test1_fail_preamble_str_len:	equ	.test1_fail_preamble_str_end - .test1_fail_preamble_str
 
 ;
 ; test2 -- Ensure that the ROM area is read-only in the default
