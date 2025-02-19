@@ -483,10 +483,8 @@ test4:
 
 ;
 ; test5 -- Verify extended RAM is working by zeroing it, checking for zeros,
-; and then writing a different test pattern to each page and verifying it.
-;
-; XXX This test should write more patterns -- there are multiple address
-; XXX lines impacted by XRAMEN.
+; and then writing a different test pattern to each 1K region and verifying
+; it.
 ;
 test5:
 	ld	HL, .test5_preamble_str
@@ -503,44 +501,291 @@ test5:
 
 	; Args were preserved; just check now.
 	call	membytecmp
-	jr	NZ, .test5_z_fail
+	jp	NZ, .test5_z_fail
 
 	;
-	; Write a different pattern to each page of extended RAM.
+	; Write a different pattern to each 1K region of extended RAM.
 	;
-	ld	A, 0xaa			; A <- test pattern
+	ld	A, 0x01			; A <- test pattern
 	ld	HL, ram_ext		; HL <- destination
-	ld	BC, page_size		; BC <- byte count
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x02			; A <- test pattern
+	ld	HL, ram_ext+0x0400	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x04			; A <- test pattern
+	ld	HL, ram_ext+0x0800	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x08			; A <- test pattern
+	ld	HL, ram_ext+0x0c00	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x10			; A <- test pattern
+	ld	HL, ram_ext+0x1000	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x20			; A <- test pattern
+	ld	HL, ram_ext+0x1400	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x40			; A <- test pattern
+	ld	HL, ram_ext+0x1800	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x80			; A <- test pattern
+	ld	HL, ram_ext+0x1c00	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x03			; A <- test pattern
+	ld	HL, ram_ext+0x2000	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x06			; A <- test pattern
+	ld	HL, ram_ext+0x2400	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x0c			; A <- test pattern
+	ld	HL, ram_ext+0x2800	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x18			; A <- test pattern
+	ld	HL, ram_ext+0x2c00	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x30			; A <- test pattern
+	ld	HL, ram_ext+0x3000	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x60			; A <- test pattern
+	ld	HL, ram_ext+0x3400	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0xc0			; A <- test pattern
+	ld	HL, ram_ext+0x3800	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
 	call	memset
 
 	ld	A, 0x55			; A <- test pattern
-	ld	HL, ram_ext+page_size	; HL <- destination
-	ld	BC, page_size		; BC <- byte count
+	ld	HL, ram_ext+0x3c00	; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
 	call	memset
 
 	;
-	; Check the first page.  Re-use the failure messages from test 3.
+	; Now check each 1K region.
 	;
-	ld	A, 0xaa
+	ld	A, 0x01
 	ld	HL, ram_ext
-	ld	BC, page_size
+	ld	BC, 0x400
 	call	membytecmp
-	jp	NZ, test3_p1_fail	; match -> FAIL
+	jp	NZ, .test5_2000_fail
 
-	;
-	; Check the second page.
-	;
-	ld	A, 0x55
-	ld	HL, ram_ext+page_size
-	ld	BC, page_size
+	ld	A, 0x02
+	ld	HL, ram_ext+0x0400
+	ld	BC, 0x400
 	call	membytecmp
-	jp	NZ, test3_p2_fail	; match -> FAIL
+	jp	NZ, .test5_2400_fail
+
+	ld	A, 0x04
+	ld	HL, ram_ext+0x0800
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_2800_fail
+
+	ld	A, 0x08
+	ld	HL, ram_ext+0x0c00
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_2c00_fail
+
+	ld	A, 0x10
+	ld	HL, ram_ext+0x1000
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_3000_fail
+
+	ld	A, 0x20
+	ld	HL, ram_ext+0x1400
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_3400_fail
+
+	ld	A, 0x40
+	ld	HL, ram_ext+0x1800
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_3800_fail
+
+	ld	A, 0x80
+	ld	HL, ram_ext+0x1c00
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_3c00_fail
+
+	ld	A, 0x03
+	ld	HL, ram_ext+0x2000
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_4000_fail
+
+	ld	A, 0x06
+	ld	HL, ram_ext+0x2400
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_4400_fail
+
+	ld	A, 0x0c
+	ld	HL, ram_ext+0x2800
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_4800_fail
+
+	ld	A, 0x18
+	ld	HL, ram_ext+0x2c00
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_4c00_fail
+
+	ld	A, 0x30
+	ld	HL, ram_ext+0x3000
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_5000_fail
+
+	ld	A, 0x60
+	ld	HL, ram_ext+0x3400
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_5400_fail
+
+	ld	A, 0xc0
+	ld	HL, ram_ext+0x3800
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_5800_fail
+
+	ld	A, 0x55
+	ld	HL, ram_ext+0x3c00
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, .test5_5c00_fail
 
 	jp	.generic_test_pass
 
 .test5_z_fail:
 	ld	HL, .test5_z_fail_str
 	ld	BC, .test5_z_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_2000_fail:
+	ld	HL, .test5_2000_fail_str
+	ld	BC, .test5_2000_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_2400_fail:
+	ld	HL, .test5_2400_fail_str
+	ld	BC, .test5_2400_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_2800_fail:
+	ld	HL, .test5_2800_fail_str
+	ld	BC, .test5_2800_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_2c00_fail:
+	ld	HL, .test5_2c00_fail_str
+	ld	BC, .test5_2c00_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_3000_fail:
+	ld	HL, .test5_3000_fail_str
+	ld	BC, .test5_3000_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_3400_fail:
+	ld	HL, .test5_3400_fail_str
+	ld	BC, .test5_3400_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_3800_fail:
+	ld	HL, .test5_3800_fail_str
+	ld	BC, .test5_3800_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_3c00_fail:
+	ld	HL, .test5_3c00_fail_str
+	ld	BC, .test5_3c00_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_4000_fail:
+	ld	HL, .test5_4000_fail_str
+	ld	BC, .test5_4000_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_4400_fail:
+	ld	HL, .test5_4400_fail_str
+	ld	BC, .test5_4400_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_4800_fail:
+	ld	HL, .test5_4800_fail_str
+	ld	BC, .test5_4800_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_4c00_fail:
+	ld	HL, .test5_4c00_fail_str
+	ld	BC, .test5_4c00_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_5000_fail:
+	ld	HL, .test5_5000_fail_str
+	ld	BC, .test5_5000_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_5400_fail:
+	ld	HL, .test5_5400_fail_str
+	ld	BC, .test5_5400_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_5800_fail:
+	ld	HL, .test5_5800_fail_str
+	ld	BC, .test5_5800_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test5_5c00_fail:
+	ld	HL, .test5_5c00_fail_str
+	ld	BC, .test5_5c00_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
@@ -553,6 +798,86 @@ test5:
 	defm	"--failed-- to zero"
 .test5_z_fail_str_end:
 .test5_z_fail_str_len:		equ	.test5_z_fail_str_end - .test5_z_fail_str
+
+.test5_2000_fail_str:
+	defm	"--failed-- at 0x2000"
+.test5_2000_fail_str_end:
+.test5_2000_fail_str_len:	equ	.test5_2000_fail_str - .test5_2000_fail_str_end
+
+.test5_2400_fail_str:
+	defm	"--failed-- at 0x2400"
+.test5_2400_fail_str_end:
+.test5_2400_fail_str_len:	equ	.test5_2400_fail_str - .test5_2400_fail_str_end
+
+.test5_2800_fail_str:
+	defm	"--failed-- at 0x2800"
+.test5_2800_fail_str_end:
+.test5_2800_fail_str_len:	equ	.test5_2800_fail_str - .test5_2800_fail_str_end
+
+.test5_2c00_fail_str:
+	defm	"--failed-- at 0x2c00"
+.test5_2c00_fail_str_end:
+.test5_2c00_fail_str_len:	equ	.test5_2c00_fail_str - .test5_2c00_fail_str_end
+
+.test5_3000_fail_str:
+	defm	"--failed-- at 0x3000"
+.test5_3000_fail_str_end:
+.test5_3000_fail_str_len:	equ	.test5_3000_fail_str - .test5_3000_fail_str_end
+
+.test5_3400_fail_str:
+	defm	"--failed-- at 0x3400"
+.test5_3400_fail_str_end:
+.test5_3400_fail_str_len:	equ	.test5_3400_fail_str - .test5_3400_fail_str_end
+
+.test5_3800_fail_str:
+	defm	"--failed-- at 0x3800"
+.test5_3800_fail_str_end:
+.test5_3800_fail_str_len:	equ	.test5_3800_fail_str - .test5_3800_fail_str_end
+
+.test5_3c00_fail_str:
+	defm	"--failed-- at 0x3c00"
+.test5_3c00_fail_str_end:
+.test5_3c00_fail_str_len:	equ	.test5_3c00_fail_str - .test5_3c00_fail_str_end
+
+.test5_4000_fail_str:
+	defm	"--failed-- at 0x4000"
+.test5_4000_fail_str_end:
+.test5_4000_fail_str_len:	equ	.test5_4000_fail_str - .test5_4000_fail_str_end
+
+.test5_4400_fail_str:
+	defm	"--failed-- at 0x4400"
+.test5_4400_fail_str_end:
+.test5_4400_fail_str_len:	equ	.test5_4400_fail_str - .test5_4400_fail_str_end
+
+.test5_4800_fail_str:
+	defm	"--failed-- at 0x4800"
+.test5_4800_fail_str_end:
+.test5_4800_fail_str_len:	equ	.test5_4800_fail_str - .test5_4800_fail_str_end
+
+.test5_4c00_fail_str:
+	defm	"--failed-- at 0x4c00"
+.test5_4c00_fail_str_end:
+.test5_4c00_fail_str_len:	equ	.test5_4c00_fail_str - .test5_4c00_fail_str_end
+
+.test5_5000_fail_str:
+	defm	"--failed-- at 0x5000"
+.test5_5000_fail_str_end:
+.test5_5000_fail_str_len:	equ	.test5_5000_fail_str - .test5_5000_fail_str_end
+
+.test5_5400_fail_str:
+	defm	"--failed-- at 0x5400"
+.test5_5400_fail_str_end:
+.test5_5400_fail_str_len:	equ	.test5_5400_fail_str - .test5_5400_fail_str_end
+
+.test5_5800_fail_str:
+	defm	"--failed-- at 0x5800"
+.test5_5800_fail_str_end:
+.test5_5800_fail_str_len:	equ	.test5_5800_fail_str - .test5_5800_fail_str_end
+
+.test5_5c00_fail_str:
+	defm	"--failed-- at 0x5c00"
+.test5_5c00_fail_str_end:
+.test5_5c00_fail_str_len:	equ	.test5_5c00_fail_str - .test5_5c00_fail_str_end
 
 rst:
 	ret
