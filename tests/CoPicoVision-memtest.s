@@ -90,7 +90,13 @@ main:
 	call	test1
 	call	test2
 	call	test3
+
+	; Enable the extended RAM.
+	ld	A, 0x01
+	out	(0x53), A
+
 	call	test4
+	call	test5
 
 	ld	C, 23		; Row 23
 	call	VDP_setrow
@@ -407,12 +413,8 @@ test3_p2_fail:
 .test3_p2_fail_str_len:		equ	.test3_p2_fail_str_end - .test3_p2_fail_str
 
 ;
-; test4 -- Enable extended RAM and verify it is working by zeroing it,
-; checking for zeros, and then writing a different test pattern to each
-; page and verifying it.
-;
-; XXX This test should write more patterns -- there are multiple address
-; XXX lines impacted by XRAMEN.
+; test 4 -- Verify that the base RAM range does not mirror every 1K when
+; extended RAM is enabled.
 ;
 ; Uses screen row 5.
 ;
@@ -424,11 +426,74 @@ test4:
 	ld	BC, .test4_preamble_str_len
 	call	VDP_copyin_continue
 
-	;
-	; Enable the extended RAM.
-	;
-	ld	A, 0x01
-	out	(0x53), A
+	ld	HL, ram_base		; HL <- RAM base
+	ld	(HL), 0			; Put 0 in the first byte of RAM.
+
+	ld	IX, ram_base_e1		; IX <- RAM base, first mirror
+	ld	(IX+0), 1		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	1
+	jp	Z, test1_e1_fail
+
+	ld	IX, ram_base_e2		; IX <- RAM base, second mirror
+	ld	(IX+0), 2		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	2
+	jp	Z, test1_e2_fail
+
+	ld	IX, ram_base_e3		; IX <- RAM base, third mirror
+	ld	(IX+0), 3		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	3
+	jp	Z, test1_e3_fail
+
+	ld	IX, ram_base_e4		; IX <- RAM base, fourth mirror
+	ld	(IX+0), 4		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	4
+	jp	Z, test1_e4_fail
+
+	ld	IX, ram_base_e5		; IX <- RAM base, fifth mirror
+	ld	(IX+0), 5		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	5
+	jp	Z, test1_e5_fail
+
+	ld	IX, ram_base_e6		; IX <- RAM base, sixth mirror
+	ld	(IX+0), 6		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	6
+	jp	Z, test1_e6_fail
+
+	ld	IX, ram_base_e7		; IX <- RAM base, seventh mirror
+	ld	(IX+0), 7		; Store a value there.
+	ld	A, (HL)			; Read it back from base
+	cp	7
+	jp	Z, test1_e7_fail
+
+	jp	.generic_test_pass
+
+.test4_preamble_str:
+	defm	"4 ext base non-mirror "
+.test4_preamble_str_end:
+.test4_preamble_str_len:	equ .test4_preamble_str_end - .test4_preamble_str
+
+;
+; test5 -- Verify extended RAM is working by zeroing it, checking for zeros,
+; and then writing a different test pattern to each page and verifying it.
+;
+; XXX This test should write more patterns -- there are multiple address
+; XXX lines impacted by XRAMEN.
+;
+; Uses screen row 6.
+;
+test5:
+	ld	C, 6			; Row 6
+	call	VDP_setrow
+
+	ld	HL, .test5_preamble_str
+	ld	BC, .test5_preamble_str_len
+	call	VDP_copyin_continue
 
 	;
 	; Zero out both pages and check that it stuck.
@@ -440,7 +505,7 @@ test4:
 
 	; Args were preserved; just check now.
 	call	membytecmp
-	jr	NZ, .test4_z_fail
+	jr	NZ, .test5_z_fail
 
 	;
 	; Write a different pattern to each page of extended RAM.
@@ -475,21 +540,21 @@ test4:
 
 	jp	.generic_test_pass
 
-.test4_z_fail:
-	ld	HL, .test4_z_fail_str
-	ld	BC, .test4_z_fail_str_len
+.test5_z_fail:
+	ld	HL, .test5_z_fail_str
+	ld	BC, .test5_z_fail_str_len
 	call	VDP_copyin_continue
 	ret
 
-.test4_preamble_str:
-	defm	"4 ext RAM enabled "
-.test4_preamble_str_end:
-.test4_preamble_str_len:	equ	.test4_preamble_str_end - .test4_preamble_str
+.test5_preamble_str:
+	defm	"5 ext RAM enabled "
+.test5_preamble_str_end:
+.test5_preamble_str_len:	equ	.test5_preamble_str_end - .test5_preamble_str
 
-.test4_z_fail_str:
+.test5_z_fail_str:
 	defm	"--failed-- to zero"
-.test4_z_fail_str_end:
-.test4_z_fail_str_len:		equ	.test4_z_fail_str_end - .test4_z_fail_str
+.test5_z_fail_str_end:
+.test5_z_fail_str_len:		equ	.test5_z_fail_str_end - .test5_z_fail_str
 
 rst:
 	ret
