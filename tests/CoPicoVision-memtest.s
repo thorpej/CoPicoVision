@@ -28,8 +28,8 @@
 
 	; ColecoVision cartridge header
 ColecoVision_header:
-	defb	0xaa		; Display splash screen
 	defb	0x55		; (swap to skip splash screen)
+	defb	0xaa		; Display splash screen
 	defw	0		; RAM sprite attr table pointer
 	defw	0		; RAM sprite index table pointer
 	defw	0		; pointer to temp work buffer (40 bytes)
@@ -90,6 +90,7 @@ main:
 	call	test1
 	call	test2
 	call	test3
+	call	test4
 
 	ld	C, 23		; Row 23
 	call	VDP_setrow
@@ -404,6 +405,91 @@ test3_p2_fail:
 	defm	"--failed-- at 0x4000"
 .test3_p2_fail_str_end:
 .test3_p2_fail_str_len:		equ	.test3_p2_fail_str_end - .test3_p2_fail_str
+
+;
+; test4 -- Enable extended RAM and verify it is working by zeroing it,
+; checking for zeros, and then writing a different test pattern to each
+; page and verifying it.
+;
+; XXX This test should write more patterns -- there are multiple address
+; XXX lines impacted by XRAMEN.
+;
+; Uses screen row 5.
+;
+test4:
+	ld	C, 5			; Row 5
+	call	VDP_setrow
+
+	ld	HL, .test4_preamble_str
+	ld	BC, .test4_preamble_str_len
+	call	VDP_copyin_continue
+
+	;
+	; Enable the extended RAM.
+	;
+	ld	A, 0x01
+	out	(0x53), A
+
+	;
+	; Zero out both pages and check that it stuck.
+	;
+	xor	A			; A <- 0
+	ld	HL, ram_ext		; HL <- destination
+	ld	BC, page_size*2		; BC <- byte_count
+	call	memset
+
+	; Args were preserved; just check now.
+	call	membytecmp
+	jr	NZ, .test4_z_fail
+
+	;
+	; Write a different pattern to each page of extended RAM.
+	;
+	ld	A, 0xaa			; A <- test pattern
+	ld	HL, ram_ext		; HL <- destination
+	ld	BC, page_size		; BC <- byte count
+	call	memset
+
+	ld	A, 0x55			; A <- test pattern
+	ld	HL, ram_ext+page_size	; HL <- destination
+	ld	BC, page_size		; BC <- byte count
+	call	memset
+
+	;
+	; Check the first page.  Re-use the failure messages from test 3.
+	;
+	ld	A, 0xaa
+	ld	HL, ram_ext
+	ld	BC, page_size
+	call	membytecmp
+	jp	NZ, test3_p1_fail	; match -> FAIL
+
+	;
+	; Check the second page.
+	;
+	ld	A, 0x55
+	ld	HL, ram_ext+page_size
+	ld	BC, page_size
+	call	membytecmp
+	jp	NZ, test3_p2_fail	; match -> FAIL
+
+	jp	.generic_test_pass
+
+.test4_z_fail:
+	ld	HL, .test4_z_fail_str
+	ld	BC, .test4_z_fail_str_len
+	call	VDP_copyin_continue
+	ret
+
+.test4_preamble_str:
+	defm	"4 ext RAM enabled "
+.test4_preamble_str_end:
+.test4_preamble_str_len:	equ	.test4_preamble_str_end - .test4_preamble_str
+
+.test4_z_fail_str:
+	defm	"--failed-- to zero"
+.test4_z_fail_str_end:
+.test4_z_fail_str_len:		equ	.test4_z_fail_str_end - .test4_z_fail_str
 
 rst:
 	ret
