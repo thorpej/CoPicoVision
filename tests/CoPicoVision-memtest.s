@@ -193,7 +193,7 @@ test1:
 	jp	.generic_test_pass
 
 .test1_preamble_str:
-	defm	"Test 1 base RAM mirror "
+	defm	"1 base RAM mirror "
 .test1_preamble_str_end:
 .test1_preamble_str_len:	equ .test1_preamble_str_end - .test1_preamble_str
 
@@ -322,7 +322,7 @@ test2:
 	jp	.generic_test_pass
 
 .test2_preamble_str:
-	defm	"Test 2 BIOS ROM read-only "
+	defm	"2 BIOS ROM read-only "
 .test2_preamble_str_end:
 .test2_preamble_str_len:	equ .test2_preamble_str_end - .test2_preamble_str
 
@@ -391,7 +391,7 @@ test3_p2_fail:
 	ret
 
 .test3_preamble_str:
-	defm	"Test 3 ext RAM disabled "
+	defm	"3 ext RAM disabled "
 .test3_preamble_str_end:
 .test3_preamble_str_len:	equ	.test3_preamble_str_end - .test3_preamble_str
 
