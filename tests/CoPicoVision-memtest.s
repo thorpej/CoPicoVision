@@ -68,6 +68,11 @@ VDP_IO_BASE:	equ	0xa0
 VDP_IO_MODE0:	equ	VDP_IO_BASE+0
 VDP_IO_MODE1:	equ	VDP_IO_BASE+1
 
+.enable_ext_ram_str:
+	defm	"  *** Enabling extended RAM ***"
+.enable_ext_ram_str_end:
+.enable_ext_ram_str_len:	equ	.enable_ext_ram_str_end - .enable_ext_ram_str
+
 main:
 	di			; disable interrupts
 	ld	SP, stack_top	; stack at top of base RAM
@@ -100,14 +105,19 @@ main:
 	call	test3
 
 	; Enable the extended RAM.
+	ld	C, 5
+	call	VDP_setrow
+	ld	HL, .enable_ext_ram_str
+	ld	BC, .enable_ext_ram_str_len
+	call	VDP_copyin_continue
 	ld	A, 0x01
 	out	(0x53), A
 
-	ld	C, 5
+	ld	C, 6
 	call	VDP_setrow
 	call	test4
 
-	ld	C, 6
+	ld	C, 7
 	call	VDP_setrow
 	call	test5
 
