@@ -87,15 +87,28 @@ main:
 	ld	BC, .title_str_len
 	call	VDP_copyin_continue
 
+	ld	C, 2
+	call	VDP_setrow
 	call	test1
+
+	ld	C, 3
+	call	VDP_setrow
 	call	test2
+
+	ld	C, 4
+	call	VDP_setrow
 	call	test3
 
 	; Enable the extended RAM.
 	ld	A, 0x01
 	out	(0x53), A
 
+	ld	C, 5
+	call	VDP_setrow
 	call	test4
+
+	ld	C, 6
+	call	VDP_setrow
 	call	test5
 
 	ld	C, 23		; Row 23
@@ -142,12 +155,7 @@ main:
 ; Test 1 -- Ensure that in the default memory map, base RAM is mirrored
 ; every 1K in its 8K page.
 ;
-; Uses screen row 2.
-;
 test1:
-	ld	C, 2			; Row 2
-	call	VDP_setrow
-
 	ld	HL, .test1_preamble_str
 	ld	BC, .test1_preamble_str_len
 	call	VDP_copyin_continue
@@ -287,15 +295,10 @@ test1_e7_fail:
 ; expected to land in the "hidden" RAM, and we will test for that
 ; later.
 ;
-; Uses screen row 3.
-;
 ; Put the test pattern near the end of the BIOS page.
 ;
 test2_dest:	equ	bios+page_size-64
 test2:
-	ld	C, 3			; Row 3
-	call	VDP_setrow
-
 	ld	HL, .test2_preamble_str
 	ld	BC, .test2_preamble_str_len
 	call	VDP_copyin_continue
@@ -342,12 +345,7 @@ test2:
 ; test3 -- Ensure that extended RAM is disabled by writing a test pattern
 ; and verify that it does not stick.
 ;
-; Uses screen row 4.
-;
 test3:
-	ld	C, 4			; Row 4
-	call	VDP_setrow
-
 	ld	HL, .test3_preamble_str
 	ld	BC, .test3_preamble_str_len
 	call	VDP_copyin_continue
@@ -416,12 +414,7 @@ test3_p2_fail:
 ; test 4 -- Verify that the base RAM range does not mirror every 1K when
 ; extended RAM is enabled.
 ;
-; Uses screen row 5.
-;
 test4:
-	ld	C, 5			; Row 5
-	call	VDP_setrow
-
 	ld	HL, .test4_preamble_str
 	ld	BC, .test4_preamble_str_len
 	call	VDP_copyin_continue
@@ -485,12 +478,7 @@ test4:
 ; XXX This test should write more patterns -- there are multiple address
 ; XXX lines impacted by XRAMEN.
 ;
-; Uses screen row 6.
-;
 test5:
-	ld	C, 6			; Row 6
-	call	VDP_setrow
-
 	ld	HL, .test5_preamble_str
 	ld	BC, .test5_preamble_str_len
 	call	VDP_copyin_continue
