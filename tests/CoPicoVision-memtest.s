@@ -65,6 +65,7 @@ ram_ext:	equ	0x2000	; 2 pages
 bios:		equ	0x0000	; 1 page
 
 stack_top:	equ	ram_base+0x400
+vlbank_cnt:	equ	ram_base+0x100
 
 VDP_IO_BASE:	equ	0xa0
 VDP_IO_MODE0:	equ	VDP_IO_BASE+0
@@ -75,10 +76,32 @@ VDP_IO_MODE1:	equ	VDP_IO_BASE+1
 .enable_ext_ram_str_end:
 .enable_ext_ram_str_len:	equ	.enable_ext_ram_str_end - .enable_ext_ram_str
 
+.disable_rom_str:
+	defm	"  *** Disabling BIOS ROM ***"
+.disable_rom_str_end:
+.disable_rom_str_len:	equ	.disable_rom_str_end - .disable_rom_str
+
 .zero_ext_base_ram_str:
 	defm	"  *** Zeroing extended base RAM ***"
 .zero_ext_base_ram_str_end:
 .zero_ext_base_ram_str_len:	equ	.zero_ext_base_ram_str_end - .zero_ext_base_ram_str
+
+.wait_vlank_str:
+	defm	"  *** Waiting for VBLANK NMI ***"
+.wait_vlank_str_end:
+.wait_vlank_str_len:		equ	.wait_vlank_str_end - .wait_vlank_str
+
+wait_vblank:
+	ld	HL, .wait_vlank_str
+	ld	BC, .wait_vlank_str_len
+	call	VDP_copyin_continue
+
+	ld	HL, vlbank_cnt
+	ld	A, (HL)
+.wait_vblank_loop:
+	cp	(HL)
+	jp	NZ, .wait_vblank_loop
+	ret
 
 main:
 	di			; disable interrupts
@@ -144,6 +167,34 @@ main:
 	ld	C, 9
 	call	VDP_setrow
 	call	test6
+
+	ld	C, 10
+	call	VDP_setrow
+	call	test7
+
+	ld	C, 11
+	call	VDP_setrow
+	call	wait_vblank
+
+	; Disable the ROM.  The contents were copied to the underying
+	; RAM in test 2, which will allow the NMI vector to continue
+	; working.
+	ld	C, 12
+	call	VDP_setrow
+	ld	HL, .disable_rom_str
+	ld	BC, .disable_rom_str_len
+	call	VDP_copyin_continue
+
+	ld	A, %00001101
+	out	(0x7f), A
+
+	ld	C, 13
+	call	VDP_setrow
+	call	wait_vblank
+
+	ld	C, 14
+	call	VDP_setrow
+	call	test8
 
 	ld	C, 23		; Row 23
 	call	VDP_setrow
@@ -918,6 +969,126 @@ test6:
 .test6_preamble_str_end:
 .test6_preamble_str_len:	equ	.test6_preamble_str_end - .test6_preamble_str
 
+;
+; test 7 -- Write a different pattern to each 1K region of "extended base"
+; and verify.
+;
+test7:
+	ld	HL, .test7_preamble_str
+	ld	BC, .test7_preamble_str_len
+	call	VDP_copyin_continue
+
+	;
+	; Write a different pattern to each 1K region of extended base RAM.
+	;
+	ld	A, 0x11			; A <- test pattern
+	ld	HL, ram_base_e1		; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x22			; A <- test pattern
+	ld	HL, ram_base_e2		; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x33			; A <- test pattern
+	ld	HL, ram_base_e3		; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x44			; A <- test pattern
+	ld	HL, ram_base_e4		; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x55			; A <- test pattern
+	ld	HL, ram_base_e5		; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x66			; A <- test pattern
+	ld	HL, ram_base_e6		; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	ld	A, 0x77			; A <- test pattern
+	ld	HL, ram_base_e7		; HL <- destination
+	ld	BC, 0x400		; BC <- byte count
+	call	memset
+
+	;
+	; Now check each 1K region.
+	;
+	ld	A, 0x11
+	ld	HL, ram_base_e1
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, test1_e1_fail
+
+	ld	A, 0x22
+	ld	HL, ram_base_e2
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, test1_e2_fail
+
+	ld	A, 0x33
+	ld	HL, ram_base_e3
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, test1_e3_fail
+
+	ld	A, 0x44
+	ld	HL, ram_base_e4
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, test1_e4_fail
+
+	ld	A, 0x55
+	ld	HL, ram_base_e5
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, test1_e5_fail
+
+	ld	A, 0x66
+	ld	HL, ram_base_e6
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, test1_e6_fail
+
+	ld	A, 0x77
+	ld	HL, ram_base_e7
+	ld	BC, 0x400
+	call	membytecmp
+	jp	NZ, test1_e7_fail
+
+	jp	.generic_test_pass
+
+.test7_preamble_str:
+	defm	"7 ext base RAM "
+.test7_preamble_str_end:
+.test7_preamble_str_len:	equ	.test7_preamble_str_end - .test7_preamble_str
+
+;
+; test 8 -- Check the test pattern written in test2 now that the ROM
+; has been disabled.
+;
+test8:
+	ld	HL, .test8_preamble_str
+	ld	BC, .test8_preamble_str_len
+	call	VDP_copyin_continue
+
+	ld	HL, .test2_testpat	; HL <- test pattern
+	ld	DE, test2_dest		; DE <- destination
+	ld	BC, .test2_testpat_len	; BC <- length
+	call	memcmp			; Now, compare.
+	jp	NZ, .generic_test_fail
+	jp	.generic_test_pass
+
+.test8_preamble_str:
+	defm	"8 check ROM area test pattern "
+.test8_preamble_str_end:
+.test8_preamble_str_len:	equ	.test8_preamble_str_end - .test8_preamble_str
+
 rst:
 	ret
 
@@ -1068,6 +1239,10 @@ VDP_init:
 	ret
 
 VDP_intr:
+	push	HL
+	ld	HL, vlbank_cnt
+	inc	(HL)
+	pop	HL
 	retn
 
 ;
