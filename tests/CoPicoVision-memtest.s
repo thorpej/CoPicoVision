@@ -58,6 +58,8 @@ ram_base_e5:	equ	0x7400
 ram_base_e6:	equ	0x7800
 ram_base_e7:	equ	0x7c00	; last echo
 
+cart_base:	equ	0x8000
+
 page_size:	equ	0x2000
 ram_ext:	equ	0x2000	; 2 pages
 bios:		equ	0x0000	; 1 page
@@ -72,6 +74,11 @@ VDP_IO_MODE1:	equ	VDP_IO_BASE+1
 	defm	"  *** Enabling extended RAM ***"
 .enable_ext_ram_str_end:
 .enable_ext_ram_str_len:	equ	.enable_ext_ram_str_end - .enable_ext_ram_str
+
+.zero_ext_base_ram_str:
+	defm	"  *** Zeroing extended base RAM ***"
+.zero_ext_base_ram_str_end:
+.zero_ext_base_ram_str_len:	equ	.zero_ext_base_ram_str_end - .zero_ext_base_ram_str
 
 main:
 	di			; disable interrupts
@@ -110,6 +117,7 @@ main:
 	ld	HL, .enable_ext_ram_str
 	ld	BC, .enable_ext_ram_str_len
 	call	VDP_copyin_continue
+
 	ld	A, 0x01
 	out	(0x53), A
 
@@ -120,6 +128,22 @@ main:
 	ld	C, 7
 	call	VDP_setrow
 	call	test5
+
+	; Zero the "extended base" RAM.
+	ld	C, 8
+	call	VDP_setrow
+	ld	HL, .zero_ext_base_ram_str
+	ld	BC, .zero_ext_base_ram_str_len
+	call	VDP_copyin_continue
+
+	xor	A			  ; A <- 0
+	ld	HL, ram_base_e1		  ; HL <- destination
+	ld	BC, cart_base-ram_base_e1 ; BC <- byte count
+	call	memset
+
+	ld	C, 9
+	call	VDP_setrow
+	call	test6
 
 	ld	C, 23		; Row 23
 	call	VDP_setrow
@@ -586,6 +610,7 @@ test5:
 	ld	BC, 0x400		; BC <- byte count
 	call	memset
 
+test5_verify:
 	;
 	; Now check each 1K region.
 	;
@@ -878,6 +903,20 @@ test5:
 	defm	"--failed-- at 0x5c00"
 .test5_5c00_fail_str_end:
 .test5_5c00_fail_str_len:	equ	.test5_5c00_fail_str - .test5_5c00_fail_str_end
+
+;
+; test6 -- Re-verify the patterns written to extended RAM in test5.
+;
+test6:
+	ld	HL, .test6_preamble_str
+	ld	BC, .test6_preamble_str_len
+	call	VDP_copyin_continue
+	jp	test5_verify
+
+.test6_preamble_str:
+	defm	"6 ext RAM re-check "
+.test6_preamble_str_end:
+.test6_preamble_str_len:	equ	.test6_preamble_str_end - .test6_preamble_str
 
 rst:
 	ret
