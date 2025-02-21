@@ -20,6 +20,22 @@ ShareAlike 4.0 International license](https://creativecommons.org/licenses/by-sa
 ![CC BY-SA 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 ## Project Status
+### Update - Feb 21, 2025
+I've had some time recently to test my one built-up rev 2.0 board (with
+all of the necessary rework performed).  I found that one rework procedure
+was incomplete, and therefore I'm recommending that others do not build up
+any 2.x boards at this time.  I managed to spot the problem and avoided
+damaging any chips, but I'd rather be safe than sorry.  I also discovered
+another bug, of sorts, in the memory decoding logic when testing an SGM
+game ("1942").  Spoiler alert: SGM games are not working correctly yet.
+The issue revolves around the way address lines A10-A12 are gated to
+provide the stock ColecoVision RAM "mirroring" behavior.  Those lines are
+gated too aggressively, and a change to the MEMDEC GAL and a change to
+the input signal to the 74HCT08 that gates those lines was required.  I
+discovered this using a memory map test utility I wrote for this purpose.
+I still don't understand how this bug would break "1942", though, so I
+still have some work to do.
+
 ### Update - Jan 23, 2025
 I received the rev 2.0 boards a little while ago, and the other night started
 building one up, only to realize I forgot to oder some parts.  Oh well,
@@ -428,6 +444,16 @@ analog magic going on, so I decided not to push my luck.  I don't have any
 of the quadrature controllers to test with at this time.
 
 ## Errata
+Rev 2.x of the CoPicoVision has the following bugs:
+* Address lines A10-A12 of the RAM are gated by XRAMEN, which causes
+problems when copying the BIOS ROM to the RAM below when extended RAM
+is not yet enabled.  This is correct in rev 3.0 of the CoPicoVision board
+by adding a new signal, XRAMAD, to the MEMDEC GAL, and using it to gate
+those RAM address lines.  XRAMAD is high *unless* the base RAM page is
+accessed when extended RAM is disabled, thus preserving the original
+ColecoVision "mirroring" behavior.  No re-work procedure for 2.x boards
+is provided.
+
 Rev 2.0 of the CoPicoVision has the following bugs:
 * The memory address decoder keys off the wrong signal when detecting
 reads vs. writes to the 8K page where the BIOS ROM is located.  This can
@@ -435,6 +461,9 @@ lead to unreliable behavior when the BIOS ROM is disabled.  This issue only
 affects Super Game Module games that disable the BIOS ROM.
 [This procedure](errata/rev2_0_memdec_bodge.md) will correct the problem.
 The issue is corrected in rev 2.1 of the CoPicoVision board.
+**Note: this rework procedure is incomplete.  It is recommended that,
+unless you are willing and able to troubleshoot and repair your own board,
+that you do not build any rev 2.x boards.**
 * The AY-3-8910 sound chip has the wrong clock source.  This will lead to
 incorrect sound output of any Super Game Module game that uses the
 AY-3-8910 sound chip (which is nearly all of them).  For rev 2.x boards, this
