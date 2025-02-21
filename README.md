@@ -499,6 +499,10 @@ divides the input frequency by 4 and 8.
 * Changed Q401 and Q402 from TO-92-3 packages to SOT-523 surface-mount
 packages.
 * Changed the VGA resistor ladder DAC to surface-mount packages.
+* Added a new XRAMAD signal to the MEMDEC GAL that is active *unless*
+the base RAM page is accessed with extended RAM **disabled**.  The
+74HCT08 that gates A10-A12 on the SRAM chip now using XRAMAD rather than
+XRAMEN.
 
 ### Rev 2.1
 
