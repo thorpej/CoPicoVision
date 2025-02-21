@@ -401,6 +401,10 @@ test2:
 	ld	BC, page_size		; BC <- length
 	ldir				; Copy it
 
+	; XXX
+	ld	A, 0x01
+	out	(0x53), A
+
 	ld	HL, .test2_testpat	; HL <- test pattern
 	ld	DE, test2_dest		; DE <- destination
 	ld	BC, .test2_testpat_len	; BC <- length
@@ -411,6 +415,10 @@ test2:
 	pop	BC			; restore the arguments
 	pop	DE
 	pop	HL
+
+	; XXX
+	xor	A
+	out	(0x53), A
 
 	call	memcmp			; Now, compare.
 	jp	Z, .generic_test_fail	; Match -> FAIL - ROM is enabled!
@@ -1077,12 +1085,16 @@ test8:
 	ld	BC, .test8_preamble_str_len
 	call	VDP_copyin_continue
 
-	ld	HL, .test2_testpat	; HL <- test pattern
-	ld	DE, test2_dest		; DE <- destination
+	ld	HL, test2_dest		; HL <- test pattern written to
+	ld	DE, .test2_testpat	; DE <- test pattern written from
 	ld	BC, .test2_testpat_len	; BC <- length
 	call	memcmp			; Now, compare.
-	jp	NZ, .generic_test_fail
+	jp	NZ, .test8_fail
 	jp	.generic_test_pass
+
+.test8_fail:
+	call	hexdump			; HL and BC already set
+	jp	.generic_test_fail
 
 .test8_preamble_str:
 	defm	"8 check ROM area test pattern "
@@ -1206,6 +1218,88 @@ membytecmp:
 	pop	DE
 	pop	BC
 	ret
+
+;
+; hexdump:
+;	Dump a buffer as hexadecimal numbers.
+;
+; Arguments:
+;	HL	Pointer to buffer
+;	BC	Byte count
+;
+; Returns:
+;	None.
+;
+; Clobbers:
+;	None.
+;
+hexdump:
+	push	AF			; save AF
+	push	HL			; save HL
+	push	BC			; save BC
+
+.hexdump_loop:
+	ld	A, (HL)
+	call	printhex
+	inc	HL
+	dec	BC
+	ld	A, ' '
+	call	VDP_vram_put
+	ld	A, C
+	or	B
+	jr	NZ, .hexdump_loop
+
+	pop	BC
+	pop	HL
+	pop	AF
+	ret
+
+;
+; printhex:
+;	Prints an 8-bit hexadecimal number
+;
+; Arguments:
+;	A	The value to print.
+;
+; Returns:
+;	None.
+;
+; Clobbers:
+;	None.
+;
+printhex:
+	push	AF			; save AF
+	push	BC			; save BC
+	push	HL			; save HL
+
+	push	AF			; save AF again
+	ld	C, A			; get value into C
+	ld	B, 0			; zero-extend to 16-bit
+	srl	C			; get the upper nybble...
+	srl	C
+	srl	C
+	srl	C			; ...into the lower nybble.
+	call	.printhex_nybble
+
+	pop	AF			; get saved value back
+	and	0x0f			; mask off upper nybble
+	ld	C, A			; get value into C
+					; (B is still 0)
+	call	.printhex_nybble
+
+	pop	HL
+	pop	BC
+	pop	AF
+	ret
+
+.printhex_nybble:
+	ld	HL, .printhex_digits
+	add	HL, BC			; HL points to the digit
+	ld	A, (HL)			; A = digit character
+	call	VDP_vram_put		; ...and put it to the console.
+	ret
+.printhex_digits:
+	defm	"0123456789ABCDEF"
 
 ;
 ; VDP_init:
