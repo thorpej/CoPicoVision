@@ -1,8 +1,8 @@
 GAL22V10
 MEMDEC
 
-CLK /RFSH     M1       NC      /MREQ    /RD XRAMEN ROMEN A13     A14     A15    GND
-NC  /CRTESEL /CRTCSEL /CRTASEL /CRT8SEL  NC NC     NC    M1WAIT /RAMSEL /ROMSEL VCC
+CLK /RFSH     M1       NC      /MREQ    /RD     XRAMEN ROMEN A13     A14     A15    GND
+NC  /CRTESEL /CRTCSEL /CRTASEL /CRT8SEL  XRAMAD NC     NC    M1WAIT /RAMSEL /ROMSEL VCC
 
 ;
 ; This implements memory space decoding and M1 wait-state generation for
@@ -33,6 +33,15 @@ RAMSEL   = /A15 * /A14 * /A13 * MREQ * /RFSH *  RD * /ROMEN ; ROM (dis) reads
          + /A15 * /A14 *  A13 * MREQ * /RFSH * XRAMEN       ; XRAM $2000
          + /A15 *  A14 * /A13 * MREQ * /RFSH * XRAMEN       ; XRAM $4000
          + /A15 *  A14 *  A13 * MREQ * /RFSH                ; base RAM $6000
+
+;
+; A10-A12 need to be valid on the RAM address bus UNLESS we're accessing
+; the base RAM page with XRAMEN disabled.  XRAMAD provides the signal
+; that facilitates this to a 74HCT08 that gates those address lines.
+; XRAMAD is an active-high output, but we negate it here so that it's
+; high whenever these conditions are NOT true.
+;
+/XRAMAD  = /A15 *  A14 *  A13 * MREQ * /RFSH * /XRAMEN      ; base RAM $6000
 
 CRT8SEL  =  A15 * /A14 * /A13 * MREQ * /RFSH
 CRTASEL  =  A15 * /A14 *  A13 * MREQ * /RFSH
